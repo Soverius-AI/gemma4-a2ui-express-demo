@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling==1.33.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "a2ui-model-tools"
+version = "0.1.0"
+description = "LoRA merge and WebLLM conversion for the Gemma 4 A2UI Express fine-tune."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = ["numpy==2.5.4"]
+
+[project.optional-dependencies]
+dev = ["pytest==9.2.0", "ruff==0.17.4", "safetensors==0.8.0"]
+# `onnx_patch`: requantize a LoRA into the onnx-community q4f16 export.
+onnx = ["onnx==1.23.2", "onnxruntime==1.31.1", "safetensors==0.8.0"]
+
+[project.scripts]
+a2ui-model-tools = "a2ui_model_tools.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/a2ui_model_tools"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers"]
+pythonpath = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "PTH", "N", "PL"]
+# Optional dependencies and subcommands are imported lazily on purpose.
+ignore = ["PLC0415", "PLR0913", "PLR2004"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["a2ui_model_tools"]
+known-local-folder = ["helpers"]

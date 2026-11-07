@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.angular/
+out-tsc/
+coverage/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+# Model weights and Python producer environments are not source artifacts.
+models/
+.models/
+.venv-models/
+__pycache__/
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+training/runs/

@@ -1,0 +1,476 @@
+[
+ {
+  "chain": "card-6",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "card-6",
+  "step": 1,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Copperline Jazz Club\")\ndoors_label = Caption(\"Doors\")\ndoors_value = Text(text=\"Thursday–Saturday, 19:30\", fontWeight=\"medium\")\ndoors_row = Row(children=[doors_label, doors_value], justify=\"spaceBetween\")\nvenue_label = Caption(\"Venue\")\nvenue_value = Text(text=\"Cellar, Brook Lane 22\", fontWeight=\"medium\")\nvenue_row = Row(children=[venue_label, venue_value], justify=\"spaceBetween\")\ncover_charge_label = Caption(\"Cover charge\")\ncover_charge_value = Text(text=\"€10.00\", fontWeight=\"medium\")\ncover_charge_row = Row(children=[cover_charge_label, cover_charge_value], justify=\"spaceBetween\")\nroot = Card(\n    children=[heading, doors_row, venue_row, cover_charge_row],\n    gap=4\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-6",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Copperline Jazz Club\")\ndoors_label = Caption(\"Doors\")\ndoors_value = Text(text=\"Thursday–Saturday, 19:30\", fontWeight=\"medium\")\ndoors_row = Row(children=[doors_label, doors_value], justify=\"spaceBetween\")\nvenue_label = Caption(\"Venue\")\nvenue_value = Text(text=\"Cellar, Brook Lane 22\", fontWeight=\"medium\")\nvenue_row = Row(children=[venue_label, venue_value], justify=\"spaceBetween\")\ncover_charge_label = Caption(\"Cover charge\")\ncover_charge_value = Text(text=\"€10.00\", fontWeight=\"medium\")\ncover_charge_row = Row(children=[cover_charge_label, cover_charge_value], justify=\"spaceBetween\")\nroot = Card(\n    children=[heading, doors_row, venue_row, cover_charge_row],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Prices include VAT.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, doors_row, venue_row, cover_charge_row, note], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-6",
+  "step": 3,
+  "kind": "create",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Copperline Jazz Club\")\ndoors_label = Caption(\"Doors\")\ndoors_value = Text(text=\"Thursday–Saturday, 19:30\", fontWeight=\"medium\")\ndoors_row = Row(children=[doors_label, doors_value], justify=\"spaceBetween\")\nvenue_label = Caption(\"Venue\")\nvenue_value = Text(text=\"Cellar, Brook Lane 22\", fontWeight=\"medium\")\nvenue_row = Row(children=[venue_label, venue_value], justify=\"spaceBetween\")\ncover_charge_label = Caption(\"Cover charge\")\ncover_charge_value = Text(text=\"€10.00\", fontWeight=\"medium\")\ncover_charge_row = Row(children=[cover_charge_label, cover_charge_value], justify=\"spaceBetween\")\nroot = Card(\n    children=[heading, doors_row, venue_row, cover_charge_row],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Prices include VAT.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, doors_row, venue_row, cover_charge_row, note], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\ncover_charge_value = Text(text=\"€40.00\", fontWeight=\"medium\")\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-6",
+  "step": 4,
+  "kind": "action",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Copperline Jazz Club\")\ndoors_label = Caption(\"Doors\")\ndoors_value = Text(text=\"Thursday–Saturday, 19:30\", fontWeight=\"medium\")\ndoors_row = Row(children=[doors_label, doors_value], justify=\"spaceBetween\")\nvenue_label = Caption(\"Venue\")\nvenue_value = Text(text=\"Cellar, Brook Lane 22\", fontWeight=\"medium\")\nvenue_row = Row(children=[venue_label, venue_value], justify=\"spaceBetween\")\ncover_charge_label = Caption(\"Cover charge\")\ncover_charge_value = Text(text=\"€10.00\", fontWeight=\"medium\")\ncover_charge_row = Row(children=[cover_charge_label, cover_charge_value], justify=\"spaceBetween\")\nroot = Card(\n    children=[heading, doors_row, venue_row, cover_charge_row],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Prices include VAT.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, doors_row, venue_row, cover_charge_row, note], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\ncover_charge_value = Text(text=\"€40.00\", fontWeight=\"medium\")\n</a2ui>",
+   "<a2ui>\n$/visitorName = \"\"\n$/visitorEmail = \"\"\n$/visitDate = \"\"\n$/partySize = \"2\"\n$/newsletter = false\n\nheading = Title(\"Book a visit to Copperline Jazz Club\")\n\nname_input = TextField(\"Your name\", $/visitorName)\nemail_input = TextField(\"Email\", $/visitorEmail, variant=\"email\")\ndate_input = TextField(\"Preferred date\", $/visitDate)\nsize_select = Select(\"Party size\", [\"1\", \"2\", \"3\", \"4\"], $/partySize)\nnewsletter_check = CheckBox(\"Send me news\", $/newsletter)\n\nsubmit_btn = Button(\"Request booking\", variant=\"primary\", submit=true)\n\nbooking_form = Form(\n    children=[name_input, email_input, date_input, size_select, newsletter_check, submit_btn],\n    onSubmit=Event(\"reserve\", {\n        visitorName: $/visitorName,\n        visitorEmail: $/visitorEmail,\n        visitDate: $/visitDate,\n        partySize: $/partySize,\n        newsletter: $/newsletter\n    })\n)\n\nroot = Card(\n    children=[heading, booking_form],\n    gap=4\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-6",
+  "step": 5,
+  "kind": "edit",
+  "surfaceId": "view-3",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Copperline Jazz Club\")\ndoors_label = Caption(\"Doors\")\ndoors_value = Text(text=\"Thursday–Saturday, 19:30\", fontWeight=\"medium\")\ndoors_row = Row(children=[doors_label, doors_value], justify=\"spaceBetween\")\nvenue_label = Caption(\"Venue\")\nvenue_value = Text(text=\"Cellar, Brook Lane 22\", fontWeight=\"medium\")\nvenue_row = Row(children=[venue_label, venue_value], justify=\"spaceBetween\")\ncover_charge_label = Caption(\"Cover charge\")\ncover_charge_value = Text(text=\"€10.00\", fontWeight=\"medium\")\ncover_charge_row = Row(children=[cover_charge_label, cover_charge_value], justify=\"spaceBetween\")\nroot = Card(\n    children=[heading, doors_row, venue_row, cover_charge_row],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Prices include VAT.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, doors_row, venue_row, cover_charge_row, note], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\ncover_charge_value = Text(text=\"€40.00\", fontWeight=\"medium\")\n</a2ui>",
+   "<a2ui>\n$/visitorName = \"\"\n$/visitorEmail = \"\"\n$/visitDate = \"\"\n$/partySize = \"2\"\n$/newsletter = false\n\nheading = Title(\"Book a visit to Copperline Jazz Club\")\n\nname_input = TextField(\"Your name\", $/visitorName)\nemail_input = TextField(\"Email\", $/visitorEmail, variant=\"email\")\ndate_input = TextField(\"Preferred date\", $/visitDate)\nsize_select = Select(\"Party size\", [\"1\", \"2\", \"3\", \"4\"], $/partySize)\nnewsletter_check = CheckBox(\"Send me news\", $/newsletter)\n\nsubmit_btn = Button(\"Request booking\", variant=\"primary\", submit=true)\n\nbooking_form = Form(\n    children=[name_input, email_input, date_input, size_select, newsletter_check, submit_btn],\n    onSubmit=Event(\"reserve\", {\n        visitorName: $/visitorName,\n        visitorEmail: $/visitorEmail,\n        visitDate: $/visitDate,\n        partySize: $/partySize,\n        newsletter: $/newsletter\n    })\n)\n\nroot = Card(\n    children=[heading, booking_form],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-2\", update=true)\nresult_heading = Title(text=\"Summary\")\nresult_visitorname = Text(text=\"Your name: Renée O'Connor\")\nresult_visitoremail = Text(text=\"Email: ada@example.com\")\nresult_visitdate = Text(text=\"Preferred date: 2026-11-14\")\nresult_partysize = Text(text=\"Party size: 2\")\nresult_newsletter = Text(text=\"Send me news: Yes\")\nresult = Card(children=[result_heading, result_visitorname, result_visitoremail, result_visitdate, result_partysize, result_newsletter], gap=2)\nroot = Card(children=[heading, booking_form, result], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-13",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "card-13",
+  "step": 1,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Tinker's Bridge Market\")\nmarket_days_text = Text(text=\"Market days: Saturday, 08:00–14:00\")\nwhere_text = Text(text=\"Where: Bridge Street car park\")\nstall_fee_text = Text(text=\"Stall fee: £15.00\")\nfacts = Column(children=[market_days_text, where_text, stall_fee_text], gap=2)\ndivider = Divider()\nroot = Card(\n    children=[heading, divider, facts],\n    gap=4\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-13",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Tinker's Bridge Market\")\nmarket_days_text = Text(text=\"Market days: Saturday, 08:00–14:00\")\nwhere_text = Text(text=\"Where: Bridge Street car park\")\nstall_fee_text = Text(text=\"Stall fee: £15.00\")\nfacts = Column(children=[market_days_text, where_text, stall_fee_text], gap=2)\ndivider = Divider()\nroot = Card(\n    children=[heading, divider, facts],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Bring this confirmation with you.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, divider, facts, note], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-13",
+  "step": 3,
+  "kind": "create",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Tinker's Bridge Market\")\nmarket_days_text = Text(text=\"Market days: Saturday, 08:00–14:00\")\nwhere_text = Text(text=\"Where: Bridge Street car park\")\nstall_fee_text = Text(text=\"Stall fee: £15.00\")\nfacts = Column(children=[market_days_text, where_text, stall_fee_text], gap=2)\ndivider = Divider()\nroot = Card(\n    children=[heading, divider, facts],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Bring this confirmation with you.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, divider, facts, note], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nstall_fee_text = Text(text=\"Stall fee: £45.00\")\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-13",
+  "step": 4,
+  "kind": "action",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Tinker's Bridge Market\")\nmarket_days_text = Text(text=\"Market days: Saturday, 08:00–14:00\")\nwhere_text = Text(text=\"Where: Bridge Street car park\")\nstall_fee_text = Text(text=\"Stall fee: £15.00\")\nfacts = Column(children=[market_days_text, where_text, stall_fee_text], gap=2)\ndivider = Divider()\nroot = Card(\n    children=[heading, divider, facts],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Bring this confirmation with you.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, divider, facts, note], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nstall_fee_text = Text(text=\"Stall fee: £45.00\")\n</a2ui>",
+   "<a2ui>\n$/visitorName = \"\"\n$/visitorEmail = \"\"\n$/visitDate = \"\"\n$/partySize = \"2\"\n$/newsletter = false\n\nheading = Title(\"Book a visit to Tinker's Bridge Market\")\n\nname_input = TextField(\"Your name\", $/visitorName)\nemail_input = TextField(\"Email\", $/visitorEmail, variant=\"email\")\ndate_input = TextField(\"Preferred date\", $/visitDate)\nsize_select = Select(\"Party size\", [\"1\", \"2\", \"3\", \"4\"], $/partySize)\nnewsletter_check = CheckBox(\"Send me news\", $/newsletter)\n\nsubmit_btn = Button(\"Request booking\", variant=\"primary\", submit=true)\n\nbooking_form = Form(\n    children=[name_input, email_input, date_input, size_select, newsletter_check, submit_btn],\n    onSubmit=Event(\"request_booking\", {\n        visitorName: $/visitorName,\n        visitorEmail: $/visitorEmail,\n        visitDate: $/visitDate,\n        partySize: $/partySize,\n        newsletter: $/newsletter\n    })\n)\n\nroot = Card(\n    children=[heading, booking_form],\n    gap=4\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-13",
+  "step": 5,
+  "kind": "edit",
+  "surfaceId": "view-3",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Tinker's Bridge Market\")\nmarket_days_text = Text(text=\"Market days: Saturday, 08:00–14:00\")\nwhere_text = Text(text=\"Where: Bridge Street car park\")\nstall_fee_text = Text(text=\"Stall fee: £15.00\")\nfacts = Column(children=[market_days_text, where_text, stall_fee_text], gap=2)\ndivider = Divider()\nroot = Card(\n    children=[heading, divider, facts],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Bring this confirmation with you.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, divider, facts, note], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nstall_fee_text = Text(text=\"Stall fee: £45.00\")\n</a2ui>",
+   "<a2ui>\n$/visitorName = \"\"\n$/visitorEmail = \"\"\n$/visitDate = \"\"\n$/partySize = \"2\"\n$/newsletter = false\n\nheading = Title(\"Book a visit to Tinker's Bridge Market\")\n\nname_input = TextField(\"Your name\", $/visitorName)\nemail_input = TextField(\"Email\", $/visitorEmail, variant=\"email\")\ndate_input = TextField(\"Preferred date\", $/visitDate)\nsize_select = Select(\"Party size\", [\"1\", \"2\", \"3\", \"4\"], $/partySize)\nnewsletter_check = CheckBox(\"Send me news\", $/newsletter)\n\nsubmit_btn = Button(\"Request booking\", variant=\"primary\", submit=true)\n\nbooking_form = Form(\n    children=[name_input, email_input, date_input, size_select, newsletter_check, submit_btn],\n    onSubmit=Event(\"request_booking\", {\n        visitorName: $/visitorName,\n        visitorEmail: $/visitorEmail,\n        visitDate: $/visitDate,\n        partySize: $/partySize,\n        newsletter: $/newsletter\n    })\n)\n\nroot = Card(\n    children=[heading, booking_form],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-2\", update=true)\nresult_heading = Title(text=\"Confirmation\")\nresult_visitorname = Text(text=\"Your name: Luca Ferrari\")\nresult_visitoremail = Text(text=\"Email: ada@example.com\")\nresult_visitdate = Text(text=\"Preferred date: 2026-12-02\")\nresult_partysize = Text(text=\"Party size: 1\")\nresult_newsletter = Text(text=\"Send me news: Yes\")\nresult = Card(children=[result_heading, result_visitorname, result_visitoremail, result_visitdate, result_partysize, result_newsletter], gap=2)\nroot = Card(children=[heading, booking_form, result], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-20",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "card-20",
+  "step": 1,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Quiet Machines\")\nepisode_caption = Caption(\"Episode\", color=\"secondary\")\nepisode_text = Text(text=\"12\")\nduration_caption = Caption(\"Duration\", color=\"secondary\")\nduration_text = Text(text=\"48 minutes\")\nhost_caption = Caption(\"Host\", color=\"secondary\")\nhost_text = Text(text=\"Leo Marchetti\")\nschedule_caption = Caption(\"Schedule\", color=\"secondary\")\nschedule_text = Text(text=\"Every other Thursday\")\nroot = Card(\n    children=[heading, episode_caption, episode_text, duration_caption, duration_text, host_caption, host_text, schedule_caption, schedule_text],\n    gap=3\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-20",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Quiet Machines\")\nepisode_caption = Caption(\"Episode\", color=\"secondary\")\nepisode_text = Text(text=\"12\")\nduration_caption = Caption(\"Duration\", color=\"secondary\")\nduration_text = Text(text=\"48 minutes\")\nhost_caption = Caption(\"Host\", color=\"secondary\")\nhost_text = Text(text=\"Leo Marchetti\")\nschedule_caption = Caption(\"Schedule\", color=\"secondary\")\nschedule_text = Text(text=\"Every other Thursday\")\nroot = Card(\n    children=[heading, episode_caption, episode_text, duration_caption, duration_text, host_caption, host_text, schedule_caption, schedule_text],\n    gap=3\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Last entry 30 minutes before closing.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, episode_caption, episode_text, duration_caption, duration_text, host_caption, host_text, schedule_caption, schedule_text, note], gap=3)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-20",
+  "step": 3,
+  "kind": "create",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Quiet Machines\")\nepisode_caption = Caption(\"Episode\", color=\"secondary\")\nepisode_text = Text(text=\"12\")\nduration_caption = Caption(\"Duration\", color=\"secondary\")\nduration_text = Text(text=\"48 minutes\")\nhost_caption = Caption(\"Host\", color=\"secondary\")\nhost_text = Text(text=\"Leo Marchetti\")\nschedule_caption = Caption(\"Schedule\", color=\"secondary\")\nschedule_text = Text(text=\"Every other Thursday\")\nroot = Card(\n    children=[heading, episode_caption, episode_text, duration_caption, duration_text, host_caption, host_text, schedule_caption, schedule_text],\n    gap=3\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Last entry 30 minutes before closing.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, episode_caption, episode_text, duration_caption, duration_text, host_caption, host_text, schedule_caption, schedule_text, note], gap=3)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nschedule_text = Text(text=\"Every other Thursday (updated)\")\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-20",
+  "step": 4,
+  "kind": "action",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Quiet Machines\")\nepisode_caption = Caption(\"Episode\", color=\"secondary\")\nepisode_text = Text(text=\"12\")\nduration_caption = Caption(\"Duration\", color=\"secondary\")\nduration_text = Text(text=\"48 minutes\")\nhost_caption = Caption(\"Host\", color=\"secondary\")\nhost_text = Text(text=\"Leo Marchetti\")\nschedule_caption = Caption(\"Schedule\", color=\"secondary\")\nschedule_text = Text(text=\"Every other Thursday\")\nroot = Card(\n    children=[heading, episode_caption, episode_text, duration_caption, duration_text, host_caption, host_text, schedule_caption, schedule_text],\n    gap=3\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Last entry 30 minutes before closing.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, episode_caption, episode_text, duration_caption, duration_text, host_caption, host_text, schedule_caption, schedule_text, note], gap=3)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nschedule_text = Text(text=\"Every other Thursday (updated)\")\n</a2ui>",
+   "<a2ui>\n$/visitorName = \"\"\n$/visitorEmail = \"\"\n$/visitDate = \"\"\n$/partySize = \"2\"\n$/newsletter = false\n\nheading = Title(\"Book a visit to Quiet Machines\")\n\nname_input = TextField(\"Your name\", $/visitorName)\nemail_input = TextField(\"Email\", $/visitorEmail, variant=\"email\")\ndate_input = TextField(\"Preferred date\", $/visitDate)\nsize_select = Select(\"Party size\", [\"1\", \"2\", \"3\", \"4\"], $/partySize)\nnewsletter_check = CheckBox(\"Send me news\", $/newsletter)\n\nsubmit_btn = Button(\"Request booking\", variant=\"primary\", submit=true)\n\nbooking_form = Form(\n    children=[name_input, email_input, date_input, size_select, newsletter_check, submit_btn],\n    onSubmit=Event(\"submit_enquiry\", {\n        visitorName: $/visitorName,\n        visitorEmail: $/visitorEmail,\n        visitDate: $/visitDate,\n        partySize: $/partySize,\n        newsletter: $/newsletter\n    })\n)\n\nroot = Card(\n    children=[heading, booking_form],\n    gap=4\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-20",
+  "step": 5,
+  "kind": "edit",
+  "surfaceId": "view-3",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Quiet Machines\")\nepisode_caption = Caption(\"Episode\", color=\"secondary\")\nepisode_text = Text(text=\"12\")\nduration_caption = Caption(\"Duration\", color=\"secondary\")\nduration_text = Text(text=\"48 minutes\")\nhost_caption = Caption(\"Host\", color=\"secondary\")\nhost_text = Text(text=\"Leo Marchetti\")\nschedule_caption = Caption(\"Schedule\", color=\"secondary\")\nschedule_text = Text(text=\"Every other Thursday\")\nroot = Card(\n    children=[heading, episode_caption, episode_text, duration_caption, duration_text, host_caption, host_text, schedule_caption, schedule_text],\n    gap=3\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Last entry 30 minutes before closing.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, episode_caption, episode_text, duration_caption, duration_text, host_caption, host_text, schedule_caption, schedule_text, note], gap=3)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nschedule_text = Text(text=\"Every other Thursday (updated)\")\n</a2ui>",
+   "<a2ui>\n$/visitorName = \"\"\n$/visitorEmail = \"\"\n$/visitDate = \"\"\n$/partySize = \"2\"\n$/newsletter = false\n\nheading = Title(\"Book a visit to Quiet Machines\")\n\nname_input = TextField(\"Your name\", $/visitorName)\nemail_input = TextField(\"Email\", $/visitorEmail, variant=\"email\")\ndate_input = TextField(\"Preferred date\", $/visitDate)\nsize_select = Select(\"Party size\", [\"1\", \"2\", \"3\", \"4\"], $/partySize)\nnewsletter_check = CheckBox(\"Send me news\", $/newsletter)\n\nsubmit_btn = Button(\"Request booking\", variant=\"primary\", submit=true)\n\nbooking_form = Form(\n    children=[name_input, email_input, date_input, size_select, newsletter_check, submit_btn],\n    onSubmit=Event(\"submit_enquiry\", {\n        visitorName: $/visitorName,\n        visitorEmail: $/visitorEmail,\n        visitDate: $/visitDate,\n        partySize: $/partySize,\n        newsletter: $/newsletter\n    })\n)\n\nroot = Card(\n    children=[heading, booking_form],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-2\", update=true)\nresult_heading = Title(text=\"Your details\")\nresult_visitorname = Text(text=\"Your name: Renée O'Connor\")\nresult_visitoremail = Text(text=\"Email: yuki@example.net\")\nresult_visitdate = Text(text=\"Preferred date: 2026-11-14\")\nresult_partysize = Text(text=\"Party size: 3\")\nresult_newsletter = Text(text=\"Send me news: Yes\")\nresult = Card(children=[result_heading, result_visitorname, result_visitoremail, result_visitdate, result_partysize, result_newsletter], gap=2)\nroot = Card(children=[heading, booking_form, result], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-27",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "card-27",
+  "step": 1,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Kestrel Field Binoculars\")\nprice_label = Caption(\"Price\")\nprice_value = Text(text=\"€129.00\", fontWeight=\"medium\")\nprice_row = Row(children=[price_label, price_value], justify=\"spaceBetween\")\nmagnification_label = Caption(\"Magnification\")\nmagnification_value = Text(text=\"8×42\", fontWeight=\"medium\")\nmagnification_row = Row(children=[magnification_label, magnification_value], justify=\"spaceBetween\")\nweight_label = Caption(\"Weight\")\nweight_value = Text(text=\"680 g\", fontWeight=\"medium\")\nweight_row = Row(children=[weight_label, weight_value], justify=\"spaceBetween\")\nincludes_label = Caption(\"Includes\")\nincludes_value = Text(text=\"Case and strap\", fontWeight=\"medium\")\nincludes_row = Row(children=[includes_label, includes_value], justify=\"spaceBetween\")\nroot = Card(\n    children=[heading, price_row, magnification_row, weight_row, includes_row],\n    gap=4\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-27",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Kestrel Field Binoculars\")\nprice_label = Caption(\"Price\")\nprice_value = Text(text=\"€129.00\", fontWeight=\"medium\")\nprice_row = Row(children=[price_label, price_value], justify=\"spaceBetween\")\nmagnification_label = Caption(\"Magnification\")\nmagnification_value = Text(text=\"8×42\", fontWeight=\"medium\")\nmagnification_row = Row(children=[magnification_label, magnification_value], justify=\"spaceBetween\")\nweight_label = Caption(\"Weight\")\nweight_value = Text(text=\"680 g\", fontWeight=\"medium\")\nweight_row = Row(children=[weight_label, weight_value], justify=\"spaceBetween\")\nincludes_label = Caption(\"Includes\")\nincludes_value = Text(text=\"Case and strap\", fontWeight=\"medium\")\nincludes_row = Row(children=[includes_label, includes_value], justify=\"spaceBetween\")\nroot = Card(\n    children=[heading, price_row, magnification_row, weight_row, includes_row],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Bring this confirmation with you.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, price_row, magnification_row, weight_row, includes_row, note], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-27",
+  "step": 3,
+  "kind": "create",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Kestrel Field Binoculars\")\nprice_label = Caption(\"Price\")\nprice_value = Text(text=\"€129.00\", fontWeight=\"medium\")\nprice_row = Row(children=[price_label, price_value], justify=\"spaceBetween\")\nmagnification_label = Caption(\"Magnification\")\nmagnification_value = Text(text=\"8×42\", fontWeight=\"medium\")\nmagnification_row = Row(children=[magnification_label, magnification_value], justify=\"spaceBetween\")\nweight_label = Caption(\"Weight\")\nweight_value = Text(text=\"680 g\", fontWeight=\"medium\")\nweight_row = Row(children=[weight_label, weight_value], justify=\"spaceBetween\")\nincludes_label = Caption(\"Includes\")\nincludes_value = Text(text=\"Case and strap\", fontWeight=\"medium\")\nincludes_row = Row(children=[includes_label, includes_value], justify=\"spaceBetween\")\nroot = Card(\n    children=[heading, price_row, magnification_row, weight_row, includes_row],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Bring this confirmation with you.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, price_row, magnification_row, weight_row, includes_row, note], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nincludes_value = Text(text=\"Case and strap (updated)\", fontWeight=\"medium\")\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-27",
+  "step": 4,
+  "kind": "action",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Kestrel Field Binoculars\")\nprice_label = Caption(\"Price\")\nprice_value = Text(text=\"€129.00\", fontWeight=\"medium\")\nprice_row = Row(children=[price_label, price_value], justify=\"spaceBetween\")\nmagnification_label = Caption(\"Magnification\")\nmagnification_value = Text(text=\"8×42\", fontWeight=\"medium\")\nmagnification_row = Row(children=[magnification_label, magnification_value], justify=\"spaceBetween\")\nweight_label = Caption(\"Weight\")\nweight_value = Text(text=\"680 g\", fontWeight=\"medium\")\nweight_row = Row(children=[weight_label, weight_value], justify=\"spaceBetween\")\nincludes_label = Caption(\"Includes\")\nincludes_value = Text(text=\"Case and strap\", fontWeight=\"medium\")\nincludes_row = Row(children=[includes_label, includes_value], justify=\"spaceBetween\")\nroot = Card(\n    children=[heading, price_row, magnification_row, weight_row, includes_row],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Bring this confirmation with you.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, price_row, magnification_row, weight_row, includes_row, note], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nincludes_value = Text(text=\"Case and strap (updated)\", fontWeight=\"medium\")\n</a2ui>",
+   "<a2ui>\n$/visitorName = \"\"\n$/visitorEmail = \"\"\n$/visitDate = \"\"\n$/partySize = \"2\"\n$/newsletter = false\n\nheading = Title(\"Book a visit to Kestrel Field Binoculars\")\n\nname_input = TextField(\"Your name\", $/visitorName)\nemail_input = TextField(\"Email\", $/visitorEmail, variant=\"email\")\ndate_input = TextField(\"Preferred date\", $/visitDate)\nsize_select = Select(\"Party size\", [\"1\", \"2\", \"3\", \"4\"], $/partySize)\nnewsletter_check = CheckBox(\"Send me news\", $/newsletter)\n\nsubmit_btn = Button(\"Request booking\", variant=\"primary\", submit=true)\n\nbooking_form = Form(\n    children=[name_input, email_input, date_input, size_select, newsletter_check, submit_btn],\n    onSubmit=Event(\"submit_enquiry\", {\n        visitorName: $/visitorName,\n        visitorEmail: $/visitorEmail,\n        visitDate: $/visitDate,\n        partySize: $/partySize,\n        newsletter: $/newsletter\n    })\n)\n\nroot = Card(\n    children=[heading, booking_form],\n    gap=4\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "card-27",
+  "step": 5,
+  "kind": "edit",
+  "surfaceId": "view-3",
+  "committed": [
+   "<a2ui>\nheading = Title(\"Kestrel Field Binoculars\")\nprice_label = Caption(\"Price\")\nprice_value = Text(text=\"€129.00\", fontWeight=\"medium\")\nprice_row = Row(children=[price_label, price_value], justify=\"spaceBetween\")\nmagnification_label = Caption(\"Magnification\")\nmagnification_value = Text(text=\"8×42\", fontWeight=\"medium\")\nmagnification_row = Row(children=[magnification_label, magnification_value], justify=\"spaceBetween\")\nweight_label = Caption(\"Weight\")\nweight_value = Text(text=\"680 g\", fontWeight=\"medium\")\nweight_row = Row(children=[weight_label, weight_value], justify=\"spaceBetween\")\nincludes_label = Caption(\"Includes\")\nincludes_value = Text(text=\"Case and strap\", fontWeight=\"medium\")\nincludes_row = Row(children=[includes_label, includes_value], justify=\"spaceBetween\")\nroot = Card(\n    children=[heading, price_row, magnification_row, weight_row, includes_row],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Bring this confirmation with you.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, price_row, magnification_row, weight_row, includes_row, note], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nincludes_value = Text(text=\"Case and strap (updated)\", fontWeight=\"medium\")\n</a2ui>",
+   "<a2ui>\n$/visitorName = \"\"\n$/visitorEmail = \"\"\n$/visitDate = \"\"\n$/partySize = \"2\"\n$/newsletter = false\n\nheading = Title(\"Book a visit to Kestrel Field Binoculars\")\n\nname_input = TextField(\"Your name\", $/visitorName)\nemail_input = TextField(\"Email\", $/visitorEmail, variant=\"email\")\ndate_input = TextField(\"Preferred date\", $/visitDate)\nsize_select = Select(\"Party size\", [\"1\", \"2\", \"3\", \"4\"], $/partySize)\nnewsletter_check = CheckBox(\"Send me news\", $/newsletter)\n\nsubmit_btn = Button(\"Request booking\", variant=\"primary\", submit=true)\n\nbooking_form = Form(\n    children=[name_input, email_input, date_input, size_select, newsletter_check, submit_btn],\n    onSubmit=Event(\"submit_enquiry\", {\n        visitorName: $/visitorName,\n        visitorEmail: $/visitorEmail,\n        visitDate: $/visitDate,\n        partySize: $/partySize,\n        newsletter: $/newsletter\n    })\n)\n\nroot = Card(\n    children=[heading, booking_form],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-2\", update=true)\nresult_heading = Title(text=\"Thank you\")\nresult_visitorname = Text(text=\"Your name: Tomasz Nowak\")\nresult_visitoremail = Text(text=\"Email: yuki@example.net\")\nresult_visitdate = Text(text=\"Preferred date: 2027-01-09\")\nresult_partysize = Text(text=\"Party size: 2\")\nresult_newsletter = Text(text=\"Send me news: Yes\")\nresult = Card(children=[result_heading, result_visitorname, result_visitoremail, result_visitdate, result_partysize, result_newsletter], gap=2)\nroot = Card(children=[heading, booking_form, result], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-6",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "form-6",
+  "step": 1,
+  "kind": "action",
+  "surfaceId": "view-1",
+  "committed": [
+   "<a2ui>\n$/primaryContact = \"\"\n$/secondaryContact = \"\"\n$/isVegetarian = false\n\nheading = Title(\"Event Catering — 0204\")\ntotal_label = Text(text=\"Total €120.40\", fontWeight=\"bold\")\n\nprimary_input = TextField(\"Primary Contact Name\", $/primaryContact)\nsecondary_input = TextField(\"Secondary Contact Name\", $/secondaryContact)\nveg_input = CheckBox(\"Vegetarian Option\", $/isVegetarian)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\ncatering_form = Form(\n    children=[primary_input, secondary_input, veg_input, submit_btn],\n    onSubmit=Event(\"submit_catering\", {\n        primaryContact: $/primaryContact,\n        secondaryContact: $/secondaryContact,\n        isVegetarian: $/isVegetarian\n    })\n)\n\nroot = Card(\n    children=[heading, total_label, catering_form],\n    gap=4\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-6",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/primaryContact = \"\"\n$/secondaryContact = \"\"\n$/isVegetarian = false\n\nheading = Title(\"Event Catering — 0204\")\ntotal_label = Text(text=\"Total €120.40\", fontWeight=\"bold\")\n\nprimary_input = TextField(\"Primary Contact Name\", $/primaryContact)\nsecondary_input = TextField(\"Secondary Contact Name\", $/secondaryContact)\nveg_input = CheckBox(\"Vegetarian Option\", $/isVegetarian)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\ncatering_form = Form(\n    children=[primary_input, secondary_input, veg_input, submit_btn],\n    onSubmit=Event(\"submit_catering\", {\n        primaryContact: $/primaryContact,\n        secondaryContact: $/secondaryContact,\n        isVegetarian: $/isVegetarian\n    })\n)\n\nroot = Card(\n    children=[heading, total_label, catering_form],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Thank you\")\nresult_primarycontact = Text(text=\"Primary Contact Name: Sample entry\")\nresult_secondarycontact = Text(text=\"Secondary Contact Name: Window seat\")\nresult_isvegetarian = Text(text=\"Vegetarian Option: Yes\")\nresult = Card(children=[result_heading, result_primarycontact, result_secondarycontact, result_isvegetarian], gap=2)\nroot = Card(children=[heading, total_label, catering_form, result], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-6",
+  "step": 3,
+  "kind": "create",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/primaryContact = \"\"\n$/secondaryContact = \"\"\n$/isVegetarian = false\n\nheading = Title(\"Event Catering — 0204\")\ntotal_label = Text(text=\"Total €120.40\", fontWeight=\"bold\")\n\nprimary_input = TextField(\"Primary Contact Name\", $/primaryContact)\nsecondary_input = TextField(\"Secondary Contact Name\", $/secondaryContact)\nveg_input = CheckBox(\"Vegetarian Option\", $/isVegetarian)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\ncatering_form = Form(\n    children=[primary_input, secondary_input, veg_input, submit_btn],\n    onSubmit=Event(\"submit_catering\", {\n        primaryContact: $/primaryContact,\n        secondaryContact: $/secondaryContact,\n        isVegetarian: $/isVegetarian\n    })\n)\n\nroot = Card(\n    children=[heading, total_label, catering_form],\n    gap=4\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Thank you\")\nresult_primarycontact = Text(text=\"Primary Contact Name: Sample entry\")\nresult_secondarycontact = Text(text=\"Secondary Contact Name: Window seat\")\nresult_isvegetarian = Text(text=\"Vegetarian Option: Yes\")\nresult = Card(children=[result_heading, result_primarycontact, result_secondarycontact, result_isvegetarian], gap=2)\nroot = Card(children=[heading, total_label, catering_form, result], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Bring this confirmation with you.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, total_label, catering_form, result, note], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-13",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "form-13",
+  "step": 1,
+  "kind": "action",
+  "surfaceId": "view-1",
+  "committed": [
+   "<a2ui>\n$/customerName = \"\"\n$/customerEmail = \"\"\n$/streetAddress = \"\"\n$/city = \"\"\n$/plantType = \"Fern\"\n$/deliveryWindow = \"Morning\"\n$/giftWrapping = false\n$/deliveryNotes = \"\"\n$/contactPhone = \"\"\n$/orderReference = \"\"\n\nheading = Title(\"Plant Shop — 0401\")\ntotal_label = Text(text=\"Total $99.21\", fontWeight=\"bold\", size=\"lg\")\nfact_text = Text(text=\"Bring your reference code to reception.\", color=\"secondary\")\n\nname_input = TextField(\"Customer Name\", $/customerName)\nemail_input = TextField(\"Customer Email\", $/customerEmail, checks=email($/customerEmail))\naddress_input = TextField(\"Street Address\", $/streetAddress)\ncity_input = TextField(\"City\", $/city)\nplant_select = Select(\"Plant Type\", [\"Fern\", \"Succulent\"], $/plantType)\nwindow_select = Select(\"Delivery Window\", [\"Morning\", \"Evening\"], $/deliveryWindow)\ngift_check = CheckBox(\"Gift Wrapping\", $/giftWrapping)\nnotes_input = TextArea(\"Delivery Notes\", $/deliveryNotes)\nphone_input = TextField(\"Contact Phone\", $/contactPhone)\nref_input = TextField(\"Order Reference\", $/orderReference)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\norder_form = Form(\n    children=[\n        name_input,\n        email_input,\n        address_input,\n        city_input,\n        plant_select,\n        window_select,\n        gift_check,\n        notes_input,\n        phone_input,\n        ref_input,\n        submit_btn\n    ],\n    onSubmit=Event(\"submit_order\", {\n        customerName: $/customerName,\n        customerEmail: $/customerEmail,\n        streetAddress: $/streetAddress,\n        city: $/city,\n        plantType: $/plantType,\n        deliveryWindow: $/deliveryWindow,\n        giftWrapping: $/giftWrapping,\n        deliveryNotes: $/deliveryNotes,\n        contactPhone: $/contactPhone,\n        orderReference: $/orderReference\n    })\n)\n\ninfo_panel = Card(\n    children=[total_label, fact_text],\n    variant=\"soft\",\n    padding=4\n)\n\nroot = Column(\n    children=[heading, info_panel, order_form],\n    gap=6,\n    padding=6\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-13",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/customerName = \"\"\n$/customerEmail = \"\"\n$/streetAddress = \"\"\n$/city = \"\"\n$/plantType = \"Fern\"\n$/deliveryWindow = \"Morning\"\n$/giftWrapping = false\n$/deliveryNotes = \"\"\n$/contactPhone = \"\"\n$/orderReference = \"\"\n\nheading = Title(\"Plant Shop — 0401\")\ntotal_label = Text(text=\"Total $99.21\", fontWeight=\"bold\", size=\"lg\")\nfact_text = Text(text=\"Bring your reference code to reception.\", color=\"secondary\")\n\nname_input = TextField(\"Customer Name\", $/customerName)\nemail_input = TextField(\"Customer Email\", $/customerEmail, checks=email($/customerEmail))\naddress_input = TextField(\"Street Address\", $/streetAddress)\ncity_input = TextField(\"City\", $/city)\nplant_select = Select(\"Plant Type\", [\"Fern\", \"Succulent\"], $/plantType)\nwindow_select = Select(\"Delivery Window\", [\"Morning\", \"Evening\"], $/deliveryWindow)\ngift_check = CheckBox(\"Gift Wrapping\", $/giftWrapping)\nnotes_input = TextArea(\"Delivery Notes\", $/deliveryNotes)\nphone_input = TextField(\"Contact Phone\", $/contactPhone)\nref_input = TextField(\"Order Reference\", $/orderReference)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\norder_form = Form(\n    children=[\n        name_input,\n        email_input,\n        address_input,\n        city_input,\n        plant_select,\n        window_select,\n        gift_check,\n        notes_input,\n        phone_input,\n        ref_input,\n        submit_btn\n    ],\n    onSubmit=Event(\"submit_order\", {\n        customerName: $/customerName,\n        customerEmail: $/customerEmail,\n        streetAddress: $/streetAddress,\n        city: $/city,\n        plantType: $/plantType,\n        deliveryWindow: $/deliveryWindow,\n        giftWrapping: $/giftWrapping,\n        deliveryNotes: $/deliveryNotes,\n        contactPhone: $/contactPhone,\n        orderReference: $/orderReference\n    })\n)\n\ninfo_panel = Card(\n    children=[total_label, fact_text],\n    variant=\"soft\",\n    padding=4\n)\n\nroot = Column(\n    children=[heading, info_panel, order_form],\n    gap=6,\n    padding=6\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Review your order\")\nresult_customername = Text(text=\"Customer Name: Renée O'Connor\")\nresult_customeremail = Text(text=\"Customer Email: renee.oconnor@example.org\")\nresult_streetaddress = Text(text=\"Street Address: Rua Augusta 40\")\nresult_city = Text(text=\"City: Vienna\")\nresult_planttype = Text(text=\"Plant Type: Succulent\")\nresult_deliverywindow = Text(text=\"Delivery Window: Evening\")\nresult_giftwrapping = Text(text=\"Gift Wrapping: Yes\")\nresult_deliverynotes = Text(text=\"Delivery Notes: Gift wrap if possible.\")\nresult_contactphone = Text(text=\"Contact Phone: +43 660 123456\")\nresult_orderreference = Text(text=\"Order Reference: REF-77\")\nresult_total = Text(text=\"Total: $99.21\")\nresult = Card(children=[result_heading, result_customername, result_customeremail, result_streetaddress, result_city, result_planttype, result_deliverywindow, result_giftwrapping, result_deliverynotes, result_contactphone, result_orderreference, result_total], gap=2)\nroot = Column(children=[heading, info_panel, order_form, result], gap=6, padding=6)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-20",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "form-20",
+  "step": 1,
+  "kind": "action",
+  "surfaceId": "view-1",
+  "committed": [
+   "<a2ui>\n$/hostName = \"\"\n$/serviceTime = \"Lunch\"\n$/vegetarianOption = false\n$/totalAmount = 108.28\n\nheading = Title(\"Event Catering — 0501\")\ntotal_fact = Row(children=[Caption(\"Total\", color=\"prose\"), Text(text=\"€108.28\", fontWeight=\"medium\")])\n\nhost_input = TextField(\"Host Name\", $/hostName)\ntime_input = Select(\"Service Time\", [\"Lunch\", \"Dinner\"], $/serviceTime)\nveg_input = CheckBox(\"Vegetarian Option\", $/vegetarianOption)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\ncatering_form = Form(\n    children=[host_input, time_input, veg_input, submit_btn],\n    onSubmit=Event(\"submit_catering\", {\n        hostName: $/hostName,\n        serviceTime: $/serviceTime,\n        vegetarianOption: $/vegetarianOption\n    })\n)\n\nroot = Card(\n    children=[heading, total_fact, catering_form],\n    gap=6\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-20",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/hostName = \"\"\n$/serviceTime = \"Lunch\"\n$/vegetarianOption = false\n$/totalAmount = 108.28\n\nheading = Title(\"Event Catering — 0501\")\ntotal_fact = Row(children=[Caption(\"Total\", color=\"prose\"), Text(text=\"€108.28\", fontWeight=\"medium\")])\n\nhost_input = TextField(\"Host Name\", $/hostName)\ntime_input = Select(\"Service Time\", [\"Lunch\", \"Dinner\"], $/serviceTime)\nveg_input = CheckBox(\"Vegetarian Option\", $/vegetarianOption)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\ncatering_form = Form(\n    children=[host_input, time_input, veg_input, submit_btn],\n    onSubmit=Event(\"submit_catering\", {\n        hostName: $/hostName,\n        serviceTime: $/serviceTime,\n        vegetarianOption: $/vegetarianOption\n    })\n)\n\nroot = Card(\n    children=[heading, total_fact, catering_form],\n    gap=6\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Thank you\")\nresult_hostname = Text(text=\"Host Name: Renée O'Connor\")\nresult_servicetime = Text(text=\"Service Time: Dinner\")\nresult_vegetarianoption = Text(text=\"Vegetarian Option: Yes\")\nresult = Card(children=[result_heading, result_hostname, result_servicetime, result_vegetarianoption], gap=2)\nroot = Card(children=[heading, total_fact, catering_form, result], gap=6)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-20",
+  "step": 3,
+  "kind": "create",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/hostName = \"\"\n$/serviceTime = \"Lunch\"\n$/vegetarianOption = false\n$/totalAmount = 108.28\n\nheading = Title(\"Event Catering — 0501\")\ntotal_fact = Row(children=[Caption(\"Total\", color=\"prose\"), Text(text=\"€108.28\", fontWeight=\"medium\")])\n\nhost_input = TextField(\"Host Name\", $/hostName)\ntime_input = Select(\"Service Time\", [\"Lunch\", \"Dinner\"], $/serviceTime)\nveg_input = CheckBox(\"Vegetarian Option\", $/vegetarianOption)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\ncatering_form = Form(\n    children=[host_input, time_input, veg_input, submit_btn],\n    onSubmit=Event(\"submit_catering\", {\n        hostName: $/hostName,\n        serviceTime: $/serviceTime,\n        vegetarianOption: $/vegetarianOption\n    })\n)\n\nroot = Card(\n    children=[heading, total_fact, catering_form],\n    gap=6\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Thank you\")\nresult_hostname = Text(text=\"Host Name: Renée O'Connor\")\nresult_servicetime = Text(text=\"Service Time: Dinner\")\nresult_vegetarianoption = Text(text=\"Vegetarian Option: Yes\")\nresult = Card(children=[result_heading, result_hostname, result_servicetime, result_vegetarianoption], gap=2)\nroot = Card(children=[heading, total_fact, catering_form, result], gap=6)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Free parking behind the building.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, total_fact, catering_form, result, note], gap=6)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-27",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "form-27",
+  "step": 1,
+  "kind": "action",
+  "surfaceId": "view-1",
+  "committed": [
+   "<a2ui>\n$/riderName = \"\"\n$/rentalDuration = \"Half Day\"\n$/helmetNeeded = false\n$/totalAmount = 156.68\n\nheading = Title(\"Bike Rental — 0604\")\ntotal_fact = Row(children=[Caption(\"Total\", color=\"prose\"), Text(text=\"£156.68\", fontWeight=\"medium\")])\n\nname_input = TextField(\"Rider Name\", $/riderName)\nduration_input = Select(\"Rental Duration\", [\"Half Day\", \"Full Day\"], $/rentalDuration)\nhelmet_input = CheckBox(\"Helmet Needed\", $/helmetNeeded)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\nrental_form = Form(\n    children=[name_input, duration_input, helmet_input, submit_btn],\n    onSubmit=Event(\"submit_rental\", {\n        riderName: $/riderName,\n        duration: $/rentalDuration,\n        helmet: $/helmetNeeded\n    })\n)\n\nroot = Card(children=[heading, total_fact, rental_form], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-27",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/riderName = \"\"\n$/rentalDuration = \"Half Day\"\n$/helmetNeeded = false\n$/totalAmount = 156.68\n\nheading = Title(\"Bike Rental — 0604\")\ntotal_fact = Row(children=[Caption(\"Total\", color=\"prose\"), Text(text=\"£156.68\", fontWeight=\"medium\")])\n\nname_input = TextField(\"Rider Name\", $/riderName)\nduration_input = Select(\"Rental Duration\", [\"Half Day\", \"Full Day\"], $/rentalDuration)\nhelmet_input = CheckBox(\"Helmet Needed\", $/helmetNeeded)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\nrental_form = Form(\n    children=[name_input, duration_input, helmet_input, submit_btn],\n    onSubmit=Event(\"submit_rental\", {\n        riderName: $/riderName,\n        duration: $/rentalDuration,\n        helmet: $/helmetNeeded\n    })\n)\n\nroot = Card(children=[heading, total_fact, rental_form], gap=4)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Summary\")\nresult_ridername = Text(text=\"Rider Name: Ada Lovelace\")\nresult_duration = Text(text=\"Rental Duration: Full Day\")\nresult_helmet = Text(text=\"Helmet Needed: No\")\nresult = Card(children=[result_heading, result_ridername, result_duration, result_helmet], gap=2)\nroot = Card(children=[heading, total_fact, rental_form, result], gap=4)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-34",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "form-34",
+  "step": 1,
+  "kind": "action",
+  "surfaceId": "view-1",
+  "committed": [
+   "<a2ui>\n$/customerName = \"\"\n$/customerEmail = \"\"\n$/streetAddress = \"\"\n$/city = \"\"\n$/plantType = \"Fern\"\n$/deliveryWindow = \"Morning\"\n$/giftWrapping = false\n$/deliveryNotes = \"\"\n$/contactPhone = \"\"\n$/orderReference = \"\"\n\nheading = Title(\"Plant Shop — 0706\")\ntotal_label = Text(text=\"Total £191.97\", fontWeight=\"bold\")\n\nname_input = TextField(\"Customer Name\", $/customerName)\nemail_input = TextField(\"Customer Email\", $/customerEmail, variant=\"email\")\naddress_input = TextField(\"Street Address\", $/streetAddress)\ncity_input = TextField(\"City\", $/city)\nplant_select = Select(\"Plant Type\", [\"Fern\", \"Succulent\"], $/plantType)\nwindow_select = Select(\"Delivery Window\", [\"Morning\", \"Evening\"], $/deliveryWindow)\ngift_check = CheckBox(\"Gift Wrapping\", $/giftWrapping)\nnotes_input = TextArea(\"Delivery Notes\", $/deliveryNotes)\nphone_input = TextField(\"Contact Phone\", $/contactPhone)\nref_input = TextField(\"Order Reference\", $/orderReference)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\norder_form = Form(\n    children=[\n        name_input,\n        email_input,\n        address_input,\n        city_input,\n        plant_select,\n        window_select,\n        gift_check,\n        notes_input,\n        phone_input,\n        ref_input,\n        submit_btn\n    ],\n    onSubmit=Event(\"submit_order\", {\n        customerName: $/customerName,\n        customerEmail: $/customerEmail,\n        streetAddress: $/streetAddress,\n        city: $/city,\n        plantType: $/plantType,\n        deliveryWindow: $/deliveryWindow,\n        giftWrapping: $/giftWrapping,\n        deliveryNotes: $/deliveryNotes,\n        contactPhone: $/contactPhone,\n        orderReference: $/orderReference\n    })\n)\n\nroot = Card(\n    children=[\n        heading,\n        total_label,\n        order_form\n    ],\n    gap=6,\n    padding=6\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-34",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/customerName = \"\"\n$/customerEmail = \"\"\n$/streetAddress = \"\"\n$/city = \"\"\n$/plantType = \"Fern\"\n$/deliveryWindow = \"Morning\"\n$/giftWrapping = false\n$/deliveryNotes = \"\"\n$/contactPhone = \"\"\n$/orderReference = \"\"\n\nheading = Title(\"Plant Shop — 0706\")\ntotal_label = Text(text=\"Total £191.97\", fontWeight=\"bold\")\n\nname_input = TextField(\"Customer Name\", $/customerName)\nemail_input = TextField(\"Customer Email\", $/customerEmail, variant=\"email\")\naddress_input = TextField(\"Street Address\", $/streetAddress)\ncity_input = TextField(\"City\", $/city)\nplant_select = Select(\"Plant Type\", [\"Fern\", \"Succulent\"], $/plantType)\nwindow_select = Select(\"Delivery Window\", [\"Morning\", \"Evening\"], $/deliveryWindow)\ngift_check = CheckBox(\"Gift Wrapping\", $/giftWrapping)\nnotes_input = TextArea(\"Delivery Notes\", $/deliveryNotes)\nphone_input = TextField(\"Contact Phone\", $/contactPhone)\nref_input = TextField(\"Order Reference\", $/orderReference)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\norder_form = Form(\n    children=[\n        name_input,\n        email_input,\n        address_input,\n        city_input,\n        plant_select,\n        window_select,\n        gift_check,\n        notes_input,\n        phone_input,\n        ref_input,\n        submit_btn\n    ],\n    onSubmit=Event(\"submit_order\", {\n        customerName: $/customerName,\n        customerEmail: $/customerEmail,\n        streetAddress: $/streetAddress,\n        city: $/city,\n        plantType: $/plantType,\n        deliveryWindow: $/deliveryWindow,\n        giftWrapping: $/giftWrapping,\n        deliveryNotes: $/deliveryNotes,\n        contactPhone: $/contactPhone,\n        orderReference: $/orderReference\n    })\n)\n\nroot = Card(\n    children=[\n        heading,\n        total_label,\n        order_form\n    ],\n    gap=6,\n    padding=6\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Review your order\")\nresult_customername = Text(text=\"Customer Name: Amara Okafor\")\nresult_customeremail = Text(text=\"Customer Email: renee.oconnor@example.org\")\nresult_streetaddress = Text(text=\"Street Address: Bergmannstraße 5\")\nresult_city = Text(text=\"City: Lisbon\")\nresult_planttype = Text(text=\"Plant Type: Fern\")\nresult_deliverywindow = Text(text=\"Delivery Window: Evening\")\nresult_giftwrapping = Text(text=\"Gift Wrapping: Yes\")\nresult_deliverynotes = Text(text=\"Delivery Notes: Arriving around 10:00.\")\nresult_contactphone = Text(text=\"Contact Phone: +49 30 5551234\")\nresult_orderreference = Text(text=\"Order Reference: ORD-2041\")\nresult_total = Text(text=\"Total: £191.97\")\nresult = Card(children=[result_heading, result_customername, result_customeremail, result_streetaddress, result_city, result_planttype, result_deliverywindow, result_giftwrapping, result_deliverynotes, result_contactphone, result_orderreference, result_total], gap=2)\nroot = Card(children=[heading, total_label, order_form, result], gap=6, padding=6)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-34",
+  "step": 3,
+  "kind": "create",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/customerName = \"\"\n$/customerEmail = \"\"\n$/streetAddress = \"\"\n$/city = \"\"\n$/plantType = \"Fern\"\n$/deliveryWindow = \"Morning\"\n$/giftWrapping = false\n$/deliveryNotes = \"\"\n$/contactPhone = \"\"\n$/orderReference = \"\"\n\nheading = Title(\"Plant Shop — 0706\")\ntotal_label = Text(text=\"Total £191.97\", fontWeight=\"bold\")\n\nname_input = TextField(\"Customer Name\", $/customerName)\nemail_input = TextField(\"Customer Email\", $/customerEmail, variant=\"email\")\naddress_input = TextField(\"Street Address\", $/streetAddress)\ncity_input = TextField(\"City\", $/city)\nplant_select = Select(\"Plant Type\", [\"Fern\", \"Succulent\"], $/plantType)\nwindow_select = Select(\"Delivery Window\", [\"Morning\", \"Evening\"], $/deliveryWindow)\ngift_check = CheckBox(\"Gift Wrapping\", $/giftWrapping)\nnotes_input = TextArea(\"Delivery Notes\", $/deliveryNotes)\nphone_input = TextField(\"Contact Phone\", $/contactPhone)\nref_input = TextField(\"Order Reference\", $/orderReference)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\norder_form = Form(\n    children=[\n        name_input,\n        email_input,\n        address_input,\n        city_input,\n        plant_select,\n        window_select,\n        gift_check,\n        notes_input,\n        phone_input,\n        ref_input,\n        submit_btn\n    ],\n    onSubmit=Event(\"submit_order\", {\n        customerName: $/customerName,\n        customerEmail: $/customerEmail,\n        streetAddress: $/streetAddress,\n        city: $/city,\n        plantType: $/plantType,\n        deliveryWindow: $/deliveryWindow,\n        giftWrapping: $/giftWrapping,\n        deliveryNotes: $/deliveryNotes,\n        contactPhone: $/contactPhone,\n        orderReference: $/orderReference\n    })\n)\n\nroot = Card(\n    children=[\n        heading,\n        total_label,\n        order_form\n    ],\n    gap=6,\n    padding=6\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Review your order\")\nresult_customername = Text(text=\"Customer Name: Amara Okafor\")\nresult_customeremail = Text(text=\"Customer Email: renee.oconnor@example.org\")\nresult_streetaddress = Text(text=\"Street Address: Bergmannstraße 5\")\nresult_city = Text(text=\"City: Lisbon\")\nresult_planttype = Text(text=\"Plant Type: Fern\")\nresult_deliverywindow = Text(text=\"Delivery Window: Evening\")\nresult_giftwrapping = Text(text=\"Gift Wrapping: Yes\")\nresult_deliverynotes = Text(text=\"Delivery Notes: Arriving around 10:00.\")\nresult_contactphone = Text(text=\"Contact Phone: +49 30 5551234\")\nresult_orderreference = Text(text=\"Order Reference: ORD-2041\")\nresult_total = Text(text=\"Total: £191.97\")\nresult = Card(children=[result_heading, result_customername, result_customeremail, result_streetaddress, result_city, result_planttype, result_deliverywindow, result_giftwrapping, result_deliverynotes, result_contactphone, result_orderreference, result_total], gap=2)\nroot = Card(children=[heading, total_label, order_form, result], gap=6, padding=6)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Free parking behind the building.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, total_label, order_form, result, note], gap=6, padding=6)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-41",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "form-41",
+  "step": 1,
+  "kind": "action",
+  "surfaceId": "view-1",
+  "committed": [
+   "<a2ui>\n$/customerName = \"\"\n$/customerEmail = \"\"\n$/streetAddress = \"\"\n$/city = \"\"\n$/plantType = \"Fern\"\n$/deliveryWindow = \"Morning\"\n$/giftWrapping = false\n$/deliveryNotes = \"\"\n$/contactPhone = \"\"\n$/orderReference = \"\"\n\nheading = Title(\"Plant Shop — 0904\")\ntotal_label = Text(text=\"Total £183.89\", fontWeight=\"bold\")\n\nname_input = TextField(\"Customer Name\", $/customerName)\nemail_input = TextField(\"Customer Email\", $/customerEmail, checks=email($/customerEmail))\naddress_input = TextField(\"Street Address\", $/streetAddress)\ncity_input = TextField(\"City\", $/city)\nplant_select = Select(\"Plant Type\", [\"Fern\", \"Succulent\"], $/plantType)\nwindow_select = Select(\"Delivery Window\", [\"Morning\", \"Evening\"], $/deliveryWindow)\ngift_check = CheckBox(\"Gift Wrapping\", $/giftWrapping)\nnotes_input = TextArea(\"Delivery Notes\", $/deliveryNotes)\nphone_input = TextField(\"Contact Phone\", $/contactPhone)\nref_input = TextField(\"Order Reference\", $/orderReference)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\norder_form = Form(\n    children=[\n        name_input,\n        email_input,\n        address_input,\n        city_input,\n        plant_select,\n        window_select,\n        gift_check,\n        notes_input,\n        phone_input,\n        ref_input,\n        submit_btn\n    ],\n    onSubmit=Event(\"submit_order\", {\n        customerName: $/customerName,\n        customerEmail: $/customerEmail,\n        streetAddress: $/streetAddress,\n        city: $/city,\n        plantType: $/plantType,\n        deliveryWindow: $/deliveryWindow,\n        giftWrapping: $/giftWrapping,\n        deliveryNotes: $/deliveryNotes,\n        contactPhone: $/contactPhone,\n        orderReference: $/orderReference\n    })\n)\n\nroot = Card(\n    children=[\n        heading,\n        total_label,\n        order_form\n    ],\n    gap=6,\n    padding=6\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-41",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/customerName = \"\"\n$/customerEmail = \"\"\n$/streetAddress = \"\"\n$/city = \"\"\n$/plantType = \"Fern\"\n$/deliveryWindow = \"Morning\"\n$/giftWrapping = false\n$/deliveryNotes = \"\"\n$/contactPhone = \"\"\n$/orderReference = \"\"\n\nheading = Title(\"Plant Shop — 0904\")\ntotal_label = Text(text=\"Total £183.89\", fontWeight=\"bold\")\n\nname_input = TextField(\"Customer Name\", $/customerName)\nemail_input = TextField(\"Customer Email\", $/customerEmail, checks=email($/customerEmail))\naddress_input = TextField(\"Street Address\", $/streetAddress)\ncity_input = TextField(\"City\", $/city)\nplant_select = Select(\"Plant Type\", [\"Fern\", \"Succulent\"], $/plantType)\nwindow_select = Select(\"Delivery Window\", [\"Morning\", \"Evening\"], $/deliveryWindow)\ngift_check = CheckBox(\"Gift Wrapping\", $/giftWrapping)\nnotes_input = TextArea(\"Delivery Notes\", $/deliveryNotes)\nphone_input = TextField(\"Contact Phone\", $/contactPhone)\nref_input = TextField(\"Order Reference\", $/orderReference)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\norder_form = Form(\n    children=[\n        name_input,\n        email_input,\n        address_input,\n        city_input,\n        plant_select,\n        window_select,\n        gift_check,\n        notes_input,\n        phone_input,\n        ref_input,\n        submit_btn\n    ],\n    onSubmit=Event(\"submit_order\", {\n        customerName: $/customerName,\n        customerEmail: $/customerEmail,\n        streetAddress: $/streetAddress,\n        city: $/city,\n        plantType: $/plantType,\n        deliveryWindow: $/deliveryWindow,\n        giftWrapping: $/giftWrapping,\n        deliveryNotes: $/deliveryNotes,\n        contactPhone: $/contactPhone,\n        orderReference: $/orderReference\n    })\n)\n\nroot = Card(\n    children=[\n        heading,\n        total_label,\n        order_form\n    ],\n    gap=6,\n    padding=6\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Review your order\")\nresult_customername = Text(text=\"Customer Name: Amara Okafor\")\nresult_customeremail = Text(text=\"Customer Email: ada@example.com\")\nresult_streetaddress = Text(text=\"Street Address: Bergmannstraße 5\")\nresult_city = Text(text=\"City: Berlin\")\nresult_planttype = Text(text=\"Plant Type: Fern\")\nresult_deliverywindow = Text(text=\"Delivery Window: Morning\")\nresult_giftwrapping = Text(text=\"Gift Wrapping: No\")\nresult_deliverynotes = Text(text=\"Delivery Notes: Allergic to nuts.\")\nresult_contactphone = Text(text=\"Contact Phone: +43 660 123456\")\nresult_orderreference = Text(text=\"Order Reference: REF-77\")\nresult_total = Text(text=\"Total: £183.89\")\nresult = Card(children=[result_heading, result_customername, result_customeremail, result_streetaddress, result_city, result_planttype, result_deliverywindow, result_giftwrapping, result_deliverynotes, result_contactphone, result_orderreference, result_total], gap=2)\nroot = Card(children=[heading, total_label, order_form, result], gap=6, padding=6)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-48",
+  "step": 0,
+  "kind": "create",
+  "surfaceId": "view-1",
+  "committed": []
+ },
+ {
+  "chain": "form-48",
+  "step": 1,
+  "kind": "action",
+  "surfaceId": "view-1",
+  "committed": [
+   "<a2ui>\n$/memberName = \"\"\n$/memberEmail = \"\"\n$/streetAddress = \"\"\n$/city = \"\"\n$/membershipType = \"Individual\"\n$/preferredBranch = \"Central\"\n$/emailReminders = false\n$/readingInterests = \"\"\n\nheading = Title(\"Library Membership — 1006 — \\\"Night Shift\\\"\")\ntotal_label = Text(text=\"Total £218.18\", fontWeight=\"bold\")\n\nname_input = TextField(\"Member Name\", $/memberName)\nemail_input = TextField(\"Member Email\", $/memberEmail, checks=email($/memberEmail))\naddress_input = TextField(\"Street Address\", $/streetAddress)\ncity_input = TextField(\"City\", $/city)\ntype_select = Select(\"Membership Type\", [\"Individual\", \"Family\"], $/membershipType)\nbranch_select = Select(\"Preferred Branch\", [\"Central\", \"Riverside\"], $/preferredBranch)\nreminders_check = CheckBox(\"Email Reminders\", $/emailReminders)\ninterests_input = TextArea(\"Reading Interests\", $/readingInterests)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\nmembership_form = Form(\n    children=[\n        name_input,\n        email_input,\n        address_input,\n        city_input,\n        type_select,\n        branch_select,\n        reminders_check,\n        interests_input,\n        submit_btn\n    ],\n    onSubmit=Event(\"submit_membership\", {\n        name: $/memberName,\n        email: $/memberEmail,\n        address: $/streetAddress,\n        city: $/city,\n        type: $/membershipType,\n        branch: $/preferredBranch,\n        reminders: $/emailReminders,\n        interests: $/readingInterests\n    })\n)\n\nroot = Card(\n    children=[\n        heading,\n        total_label,\n        membership_form\n    ],\n    gap=6,\n    padding=6\n)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-48",
+  "step": 2,
+  "kind": "edit",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/memberName = \"\"\n$/memberEmail = \"\"\n$/streetAddress = \"\"\n$/city = \"\"\n$/membershipType = \"Individual\"\n$/preferredBranch = \"Central\"\n$/emailReminders = false\n$/readingInterests = \"\"\n\nheading = Title(\"Library Membership — 1006 — \\\"Night Shift\\\"\")\ntotal_label = Text(text=\"Total £218.18\", fontWeight=\"bold\")\n\nname_input = TextField(\"Member Name\", $/memberName)\nemail_input = TextField(\"Member Email\", $/memberEmail, checks=email($/memberEmail))\naddress_input = TextField(\"Street Address\", $/streetAddress)\ncity_input = TextField(\"City\", $/city)\ntype_select = Select(\"Membership Type\", [\"Individual\", \"Family\"], $/membershipType)\nbranch_select = Select(\"Preferred Branch\", [\"Central\", \"Riverside\"], $/preferredBranch)\nreminders_check = CheckBox(\"Email Reminders\", $/emailReminders)\ninterests_input = TextArea(\"Reading Interests\", $/readingInterests)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\nmembership_form = Form(\n    children=[\n        name_input,\n        email_input,\n        address_input,\n        city_input,\n        type_select,\n        branch_select,\n        reminders_check,\n        interests_input,\n        submit_btn\n    ],\n    onSubmit=Event(\"submit_membership\", {\n        name: $/memberName,\n        email: $/memberEmail,\n        address: $/streetAddress,\n        city: $/city,\n        type: $/membershipType,\n        branch: $/preferredBranch,\n        reminders: $/emailReminders,\n        interests: $/readingInterests\n    })\n)\n\nroot = Card(\n    children=[\n        heading,\n        total_label,\n        membership_form\n    ],\n    gap=6,\n    padding=6\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Thank you\")\nresult_name = Text(text=\"Member Name: Renée O'Connor\")\nresult_email = Text(text=\"Member Email: ada@example.com\")\nresult_address = Text(text=\"Street Address: Bergmannstraße 5\")\nresult_city = Text(text=\"City: Berlin\")\nresult_type = Text(text=\"Membership Type: Family\")\nresult_branch = Text(text=\"Preferred Branch: Riverside\")\nresult_reminders = Text(text=\"Email Reminders: No\")\nresult_interests = Text(text=\"Reading Interests: Second visit\")\nresult = Card(children=[result_heading, result_name, result_email, result_address, result_city, result_type, result_branch, result_reminders, result_interests], gap=2)\nroot = Card(children=[heading, total_label, membership_form, result], gap=6, padding=6)\n</a2ui>"
+  ]
+ },
+ {
+  "chain": "form-48",
+  "step": 3,
+  "kind": "create",
+  "surfaceId": "view-2",
+  "committed": [
+   "<a2ui>\n$/memberName = \"\"\n$/memberEmail = \"\"\n$/streetAddress = \"\"\n$/city = \"\"\n$/membershipType = \"Individual\"\n$/preferredBranch = \"Central\"\n$/emailReminders = false\n$/readingInterests = \"\"\n\nheading = Title(\"Library Membership — 1006 — \\\"Night Shift\\\"\")\ntotal_label = Text(text=\"Total £218.18\", fontWeight=\"bold\")\n\nname_input = TextField(\"Member Name\", $/memberName)\nemail_input = TextField(\"Member Email\", $/memberEmail, checks=email($/memberEmail))\naddress_input = TextField(\"Street Address\", $/streetAddress)\ncity_input = TextField(\"City\", $/city)\ntype_select = Select(\"Membership Type\", [\"Individual\", \"Family\"], $/membershipType)\nbranch_select = Select(\"Preferred Branch\", [\"Central\", \"Riverside\"], $/preferredBranch)\nreminders_check = CheckBox(\"Email Reminders\", $/emailReminders)\ninterests_input = TextArea(\"Reading Interests\", $/readingInterests)\n\nsubmit_btn = Button(\"Review details\", variant=\"primary\", submit=true)\n\nmembership_form = Form(\n    children=[\n        name_input,\n        email_input,\n        address_input,\n        city_input,\n        type_select,\n        branch_select,\n        reminders_check,\n        interests_input,\n        submit_btn\n    ],\n    onSubmit=Event(\"submit_membership\", {\n        name: $/memberName,\n        email: $/memberEmail,\n        address: $/streetAddress,\n        city: $/city,\n        type: $/membershipType,\n        branch: $/preferredBranch,\n        reminders: $/emailReminders,\n        interests: $/readingInterests\n    })\n)\n\nroot = Card(\n    children=[\n        heading,\n        total_label,\n        membership_form\n    ],\n    gap=6,\n    padding=6\n)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nresult_heading = Title(text=\"Thank you\")\nresult_name = Text(text=\"Member Name: Renée O'Connor\")\nresult_email = Text(text=\"Member Email: ada@example.com\")\nresult_address = Text(text=\"Street Address: Bergmannstraße 5\")\nresult_city = Text(text=\"City: Berlin\")\nresult_type = Text(text=\"Membership Type: Family\")\nresult_branch = Text(text=\"Preferred Branch: Riverside\")\nresult_reminders = Text(text=\"Email Reminders: No\")\nresult_interests = Text(text=\"Reading Interests: Second visit\")\nresult = Card(children=[result_heading, result_name, result_email, result_address, result_city, result_type, result_branch, result_reminders, result_interests], gap=2)\nroot = Card(children=[heading, total_label, membership_form, result], gap=6, padding=6)\n</a2ui>",
+   "<a2ui>\nsurface(\"view-1\", update=true)\nnote = Text(text=\"Free parking behind the building.\", color=\"secondary\", size=\"sm\")\nroot = Card(children=[heading, total_label, membership_form, result, note], gap=6, padding=6)\n</a2ui>"
+  ]
+ }
+]

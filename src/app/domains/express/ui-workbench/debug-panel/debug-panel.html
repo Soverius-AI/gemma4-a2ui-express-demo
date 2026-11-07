@@ -1,0 +1,60 @@
+<div class="debug-heading">
+  <div class="tabs" role="group" aria-label="Debug view">
+    @for (entry of tabs; track entry.tab) {
+    <button
+      type="button"
+      class="btn"
+      [class.selected]="tab() === entry.tab"
+      (click)="select(entry.tab)"
+    >
+      {{ entry.label }}
+    </button>
+    }
+  </div>
+  <div class="run-status">
+    <span>{{ debug().stage }}</span>
+    <small>
+      @if (debug().source === "model" && debug().attempt) { Try {{
+      debug().attempt }}/{{ attempts }} · } {{ debug().elapsedMs }} ms</small
+    >
+    <button
+      type="button"
+      class="btn btn-quiet"
+      aria-controls="debug-content"
+      [attr.aria-expanded]="visible()"
+      [attr.aria-label]="visible() ? 'Collapse debugger' : 'Show debugger'"
+      (click)="toggleVisible()"
+    >
+      {{ visible() ? "Hide ⌄" : "Show ⌃" }}
+    </button>
+    <button
+      appPanelToggle
+      label="debugger"
+      [expanded]="expanded()"
+      (click)="toggleExpanded($event)"
+    ></button>
+  </div>
+</div>
+@if (visible()) {
+<div class="debug-content" id="debug-content">
+  @if (debug().diagnostics.length) {
+  <div class="diagnostics" role="alert">
+    @for (diagnostic of debug().diagnostics; track $index) {
+    <p>{{ diagnostic }}</p>
+    }
+  </div>
+  } @if (tab() === "prompt") {
+  <pre>
+{{
+        debug().systemPrompt || "Loading the catalog and Express contract…"
+      }}</pre>
+  } @else {
+  <app-code-view
+    language="json"
+    [source]="json()"
+    [label]="codeLabel()"
+    [wrap]="true"
+  />
+  }
+</div>
+}

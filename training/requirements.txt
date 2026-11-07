@@ -1,0 +1,3 @@
+# Unsloth brings matching torch, transformers, trl, peft and datasets.
+unsloth==2026.11.3
+unsloth_zoo==2026.11.3

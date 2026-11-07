@@ -1,0 +1,47 @@
+:host {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: 8px;
+  padding: 8px 20px;
+  min-height: 33px;
+  color: #68788d;
+  font-size: 10px;
+  line-height: 1.5;
+}
+a {
+  margin-left: auto;
+  color: #3765a0;
+  white-space: nowrap;
+}
+a:focus-visible {
+  outline: 3px solid #81ace8;
+  outline-offset: 2px;
+}
+.download-notice {
+  border-left: 1px solid #d2dae6;
+  padding-left: 9px;
+  color: #7b8798;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a3afbe;
+  flex: none;
+}
+.dot.enabled {
+  background: #5b9975;
+  box-shadow: 0 0 0 3px #e0eee5;
+}
+
+@media (max-width: 850px) {
+  :host {
+    flex-wrap: wrap;
+    padding-inline: 14px;
+  }
+  .download-notice {
+    border: 0;
+    padding-left: 0;
+  }
+}

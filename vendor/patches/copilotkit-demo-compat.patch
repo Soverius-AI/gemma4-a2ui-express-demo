@@ -1,0 +1,414 @@
+diff --git a/packages/angular/src/generative-ui/lib/__tests__/surface-view.spec.ts b/packages/angular/src/generative-ui/lib/__tests__/surface-view.spec.ts
+index a463879adb..f07738aaa5 100644
+--- a/packages/angular/src/generative-ui/lib/__tests__/surface-view.spec.ts
++++ b/packages/angular/src/generative-ui/lib/__tests__/surface-view.spec.ts
+@@ -33,6 +33,28 @@ describe("CopilotGenerativeUISurfaceView", () => {
+     probes.quickAdd = undefined;
+   });
+ 
++  it("shows a streaming surface without root only with partialPreview", () => {
++    const cards = (view: { container: HTMLElement }) =>
++      [...view.container.querySelectorAll("[data-card]")].map((card) =>
++        card.getAttribute("data-card"),
++      );
++    // The root is written last: until then the nodes have no parent.
++    const view = renderSurface(ui, [
++      { id: "a", component: "Card", productId: "a", name: "Alpha" },
++      { id: "list", component: "Grid", children: ["b"] },
++      { id: "b", component: "Card", productId: "b", name: "Beta" },
++    ]);
++    expect(cards(view)).toEqual([]);
++    view.act(() => view.fixture.componentRef.setInput("partialPreview", true));
++    // Top-level nodes in arrival order; "b" renders once, in its Grid.
++    expect(cards(view)).toEqual(["a", "b"]);
++    expect(grid(view.container).childElementCount).toBe(1);
++    view.update(
++      updateComponents({ id: "root", component: "Grid", children: ["list"] }),
++    );
++    expect(cards(view)).toEqual(["b"]);
++  });
++
+   it("streams cards into a grid without remounting earlier cards", () => {
+     const view = renderSurface(ui, [
+       { id: "root", component: "Grid", children: ["a", "b", "c"] },
+diff --git a/packages/angular/src/generative-ui/lib/standard/inputs/__tests__/fields.spec.ts b/packages/angular/src/generative-ui/lib/standard/inputs/__tests__/fields.spec.ts
+index 5998881599..49fc9f82ae 100644
+--- a/packages/angular/src/generative-ui/lib/standard/inputs/__tests__/fields.spec.ts
++++ b/packages/angular/src/generative-ui/lib/standard/inputs/__tests__/fields.spec.ts
+@@ -195,6 +195,31 @@ describe("standard inputs: values", () => {
+     expect(view.container.textContent).toContain("12 users");
+   });
+ 
++  it("initializes a Slider outside the browser's default 0–100 range without clamping its bound value", () => {
++    const view = renderInputs(
++      [
++        {
++          id: "root",
++          component: "Slider",
++          label: "Budget",
++          unit: "USD",
++          value: { "@path": "/budget" },
++          min: 500,
++          max: 10000,
++          step: 500,
++        },
++      ],
++      { budget: 2500 },
++    );
++    const range = byLabel<HTMLInputElement>(view.container, "Budget");
++    expect(range.valueAsNumber).toBe(2500);
++    expect(view.dataAt("/budget")).toBe(2500);
++    expect(view.container.textContent).toContain("2500 USD");
++    setValue(view, range, "4500");
++    expect(view.dataAt("/budget")).toBe(4500);
++  });
++
++
+   it("writes a DateTimeInput date and clears it with the clear button", () => {
+     const view = renderInputs(
+       [
+diff --git a/packages/angular/src/generative-ui/lib/standard/inputs/slider.ts b/packages/angular/src/generative-ui/lib/standard/inputs/slider.ts
+index e76b809ef4..5f622389a5 100644
+--- a/packages/angular/src/generative-ui/lib/standard/inputs/slider.ts
++++ b/packages/angular/src/generative-ui/lib/standard/inputs/slider.ts
+@@ -43,9 +43,9 @@ type SliderMark = NonNullable<SliderProps["marks"]>[number];
+       [attr.aria-label]="ariaLabel()"
+       [attr.aria-description]="control()['aria-description'] ?? null"
+       [attr.aria-valuetext]="unit() ? valueText() : null"
+-      [attr.min]="minValue()"
+-      [attr.max]="maxValue()"
+-      [attr.step]="stepValue()"
++      [min]="minValue()"
++      [max]="maxValue()"
++      [step]="stepValue()"
+       [disabled]="disabled() ?? false"
+       [value]="current()"
+       [attr.list]="listId()"
+diff --git a/packages/angular/src/generative-ui/lib/surface-view.ts b/packages/angular/src/generative-ui/lib/surface-view.ts
+index c41fa83242..f417deb852 100644
+--- a/packages/angular/src/generative-ui/lib/surface-view.ts
++++ b/packages/angular/src/generative-ui/lib/surface-view.ts
+@@ -3,6 +3,7 @@ import { GENERATIVE_UI_ROOT_ID } from "@copilotkit/shared";
+ import { themeStyleSheet } from "@copilotkit/shared/generative-ui";
+ import type { ManagedSurface } from "@copilotkit/core/generative-ui";
+ import { CopilotGenerativeUIChildren } from "./children.directive";
++import { isTemplateChildren } from "./children";
+ import type { GenerativeUIChildren } from "./children";
+ import { GENERATIVE_UI_RUNTIME } from "./runtime";
+ import { GenerativeUIStyles } from "./styles";
+@@ -33,6 +34,13 @@ const NO_ANCESTORS: readonly string[] = [];
+ })
+ export class CopilotGenerativeUISurfaceView {
+   readonly surface = input.required<ManagedSurface>();
++  /**
++   * While the surface streams and has no root component yet, renders its
++   * top-level components (the ones no other component lists as a child) in
++   * the order they arrived, instead of nothing. For an agent that writes
++   * the root last. Off by default.
++   */
++  readonly partialPreview = input(false);
+ 
+   readonly #runtime = inject(GENERATIVE_UI_RUNTIME);
+   readonly #styles = inject(GenerativeUIStyles);
+@@ -43,11 +51,42 @@ export class CopilotGenerativeUISurfaceView {
+     { equal: (a, b) => a?.id === b?.id },
+   );
+ 
++  /** The root id, or the top-level ids of a partial preview. */
++  readonly #rootValue = computed<string | readonly string[]>(
++    () => {
++      const surface = this.surface();
++      if (!this.partialPreview()) return GENERATIVE_UI_ROOT_ID;
++      this.#runtime.version();
++      const nodes = surface.model.componentsModel.componentsMap;
++      if (surface.status !== "streaming" || nodes.has(GENERATIVE_UI_ROOT_ID))
++        return GENERATIVE_UI_ROOT_ID;
++      const listed = new Set<string>();
++      for (const node of nodes.values()) {
++        const slots = this.#runtime.ui.components.get(node.type)?.slots ?? {};
++        for (const slot of Object.keys(slots)) {
++          const value = (node.properties as Record<string, unknown>)[slot];
++          for (const id of [value].flat())
++            if (typeof id === "string") listed.add(id);
++            else if (isTemplateChildren(id)) listed.add(id.componentId);
++        }
++      }
++      return [...nodes.keys()].filter((id) => !listed.has(id));
++    },
++    {
++      equal: (a, b) =>
++        a === b ||
++        (Array.isArray(a) &&
++          Array.isArray(b) &&
++          a.length === b.length &&
++          a.every((id, index) => id === b[index])),
++    },
++  );
++
+   protected readonly root = computed<GenerativeUIChildren>(() => ({
+     surface: this.surface(),
+     basePath: undefined,
+     ancestors: NO_ANCESTORS,
+-    value: GENERATIVE_UI_ROOT_ID,
++    value: this.#rootValue(),
+   }));
+ 
+   constructor() {
+diff --git a/packages/angular/src/generative-ui/lib/surface.ts b/packages/angular/src/generative-ui/lib/surface.ts
+index c48e9f2d89..f13075dd78 100644
+--- a/packages/angular/src/generative-ui/lib/surface.ts
++++ b/packages/angular/src/generative-ui/lib/surface.ts
+@@ -41,7 +41,10 @@ import { CopilotGenerativeUISurfaceView } from "./surface-view";
+   template: `
+     @if (surface(); as surface) {
+       <div #element [attr.data-generative-ui-surface]="id()">
+-        <copilot-generative-ui-surface-view [surface]="surface" />
++        <copilot-generative-ui-surface-view
++          [surface]="surface"
++          [partialPreview]="partialPreview()"
++        />
+       </div>
+     } @else {
+       <ng-content />
+@@ -77,6 +80,12 @@ export class CopilotGenerativeUISurface<
+    * (`[data-generative-ui-surface] { scroll-margin-top: 5rem }`).
+    */
+   readonly autoScroll = input(true);
++  /**
++   * While a surface streams without its root component, shows its top-level
++   * components as they arrive (see `CopilotGenerativeUISurfaceView`). Off by
++   * default.
++   */
++  readonly partialPreview = input(false);
+ 
+   readonly #runtime = inject(GENERATIVE_UI_RUNTIME);
+   readonly #isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+diff --git a/packages/core/src/generative-ui/__tests__/surface-manager.test.ts b/packages/core/src/generative-ui/__tests__/surface-manager.test.ts
+index d7d369a5c4..2ee7a9b85e 100644
+--- a/packages/core/src/generative-ui/__tests__/surface-manager.test.ts
++++ b/packages/core/src/generative-ui/__tests__/surface-manager.test.ts
+@@ -912,4 +912,42 @@ describe("GenerativeUISurfaceManager", () => {
+       });
+     });
+   });
++  describe("discardSurface", () => {
++    it("forgets a withdrawn streaming preview and frees its id", () => {
++      const { manager } = managerWith([create, grid(["a"]), card("a")]);
++      manager.setOwnedValue(surfaceKey("t1", "recs"), "/note", "typed");
++      const listener = listen(manager);
++      expect(manager.discardSurface("t1", "recs")).toBe(true);
++      expect(listener).toHaveBeenCalled();
++      expect(manager.getSurface("t1", "recs")).toBeUndefined();
++      expect(manager.getSurfaceForTarget("recommendations", "t1")).toBe(
++        undefined,
++      );
++      expect(manager.describeSurfaces("t1")).toEqual({});
++      // The id is new again: a later createSurface builds it from scratch.
++      manager.ingest("t1", "default", content([create, grid(["b"])]));
++      const surface = manager.getSurface("t1", "recs")!;
++      expect(surface.clientRejected).toEqual([]);
++      expect(surface.model.componentsModel.get("a")).toBeUndefined();
++      expect(surface.model.dataModel.get("/note")).toBeUndefined();
++    });
++
++    it("keeps a surface that was ready once, or deleted", () => {
++      const { manager } = managerWith([create, grid([])]);
++      manager.ingest(
++        "t1",
++        "default",
++        content([create, grid([])], { status: "ready" }),
++      );
++      manager.ingest("t1", "default", content([create, grid(["a"])]));
++      expect(manager.discardSurface("t1", "recs")).toBe(false);
++      expect(manager.getSurface("t1", "recs")).toBeDefined();
++
++      const deleted = managerWith([create, remove]).manager;
++      expect(deleted.discardSurface("t1", "recs")).toBe(false);
++      expect(deleted.describeSurfaces("t1")).toEqual({
++        recs: { target: "recommendations", status: "deleted" },
++      });
++    });
++  });
+ });
+diff --git a/packages/core/src/generative-ui/surface-manager.ts b/packages/core/src/generative-ui/surface-manager.ts
+index 88c8509eb4..ed44488baf 100644
+--- a/packages/core/src/generative-ui/surface-manager.ts
++++ b/packages/core/src/generative-ui/surface-manager.ts
+@@ -159,6 +159,8 @@ export class GenerativeUISurfaceManager {
+    * built again.
+    */
+   private readonly deletedKeys = new Set<string>();
++  /** Keys of surfaces ingested with a status other than "streaming". */
++  private readonly settledKeys = new Set<string>();
+   /**
+    * Surfaces that share their data model, by surface key: the parts of a
+    * chat surface that the prose lift split. A user write to one part goes
+@@ -175,6 +177,7 @@ export class GenerativeUISurfaceManager {
+   ) {
+     this.webCoreCatalog = new Catalog(
+       ui.id,
++      "1.0",
+       [...ui.components.keys()].map((name) => ({ name, schema: z.any() })),
+       [],
+     );
+@@ -270,9 +273,29 @@ export class GenerativeUISurfaceManager {
+       surface.serverRejected = serverRejected;
+       changed = true;
+     }
++    if (content.status !== "streaming") this.settledKeys.add(key);
+     if (changed) this.notify();
+   }
+ 
++  /**
++   * Forgets a surface that never left "streaming", as if it had never been
++   * ingested: `describeSurfaces` does not list it, and its id is free again.
++   * For a streaming preview that its agent withdrew before it was ever
++   * ready. A surface that was ready once, or deleted, is kept.
++   *
++   * @returns true when the surface was forgotten.
++   */
++  discardSurface(threadId: string, surfaceId: string): boolean {
++    const key = surfaceKey(threadId, surfaceId);
++    const surface = this.surfaces.get(key);
++    if (!surface || surface.deleted || this.settledKeys.has(key)) return false;
++    this.disposeSurface(key);
++    this.owned.delete(key);
++    this.linked.delete(key);
++    this.notify();
++    return true;
++  }
++
+   /** The surface of a `key` (see `surfaceKey`), unless it is deleted. */
+   getSurfaceByKey(key: string): ManagedSurface | undefined {
+     const surface = this.surfaces.get(key);
+@@ -845,7 +868,7 @@ export class GenerativeUISurfaceManager {
+     }
+     if (existing) model.componentsModel.removeComponent(id);
+     model.componentsModel.addComponent(
+-      new ComponentModel(id, component, properties),
++      new ComponentModel(id, component, properties, this.webCoreCatalog),
+     );
+   }
+ }
+diff --git a/packages/shared/src/__tests__/a2ui-envelope.test.ts b/packages/shared/src/__tests__/a2ui-envelope.test.ts
+index 595fc2c97d..f0c71b9de6 100644
+--- a/packages/shared/src/__tests__/a2ui-envelope.test.ts
++++ b/packages/shared/src/__tests__/a2ui-envelope.test.ts
+@@ -103,9 +103,20 @@ const withExtension = (key: string, value: unknown) => {
+ };
+ 
+ describe("readCopilotKitUIEnvelope", () => {
+-  it("does not read the pre-release v1.0 capability key", () => {
+-    const { "1.0": capabilities, ...rest } = createEnvelope();
+-    expect(readUI({ ...rest, "v1.0": capabilities })).toBeUndefined();
++  it("normalizes legacy Express SDK capabilities to the modern envelope", () => {
++    const envelope = createEnvelope();
++    const { "1.0": capabilities, ...rest } = envelope;
++    const legacy = { ...rest, "v1.0": capabilities };
++    const normalized = readUI(legacy);
++    expect(normalized).toEqual(envelope);
++    expect(envelopeToManifest(normalized!)).toEqual(
++      envelopeToManifest(envelope),
++    );
++    expect(
++      readUI({ ...rest, "v1.0": { supportedCatalogIds: [] } }),
++    ).toBeUndefined();
++    // A malformed canonical key must not be hidden by a legacy one.
++    expect(readUI({ ...legacy, "1.0": null })).toBeUndefined();
+   });
+ 
+   it("reads a markdown envelope from forwardedProps.copilotkit.ui", () => {
+diff --git a/packages/shared/src/a2ui-envelope.ts b/packages/shared/src/a2ui-envelope.ts
+index af338a00d6..88c70ec8d3 100644
+--- a/packages/shared/src/a2ui-envelope.ts
++++ b/packages/shared/src/a2ui-envelope.ts
+@@ -251,7 +251,15 @@ export function readCopilotKitUIEnvelope(forwardedProps: unknown) {
+   const namespace = forwardedProps[COPILOTKIT_FORWARDED_PROPS_KEY];
+   if (!isRecord(namespace)) return undefined;
+   const envelope = namespace.ui;
+-  return isEnvelope(envelope) ? envelope : undefined;
++  if (isEnvelope(envelope)) return envelope;
++  // Express SDK integrations used "v1.0" before the final specification.
++  // Validate the same payload, then expose only the canonical capabilities key.
++  if (isRecord(envelope) && envelope["1.0"] === undefined) {
++    const { "v1.0": capabilities, ...rest } = envelope;
++    const normalized = { ...rest, "1.0": capabilities };
++    if (isEnvelope(normalized)) return normalized;
++  }
++  return undefined;
+ }
+ 
+ /**
+diff --git a/packages/shared/src/generative-ui/__tests__/validate-operation.test.ts b/packages/shared/src/generative-ui/__tests__/validate-operation.test.ts
+index c6373cddf7..88d7a64e52 100644
+--- a/packages/shared/src/generative-ui/__tests__/validate-operation.test.ts
++++ b/packages/shared/src/generative-ui/__tests__/validate-operation.test.ts
+@@ -90,10 +90,10 @@ const reasonOf = (
+ };
+ 
+ describe("validateOperation: version and kind", () => {
+-  it("rejects the pre-release v1.0 spelling", () => {
++  it("accepts the older Express SDK v1.0 spelling", () => {
+     expect(
+       reasonOf({ version: "v1.0", deleteSurface: { surfaceId: "s1" } }),
+-    ).toBe('unsupported version "v1.0"; use "1.0"');
++    ).toBe("ok");
+   });
+ 
+   it("rejects a v0.9 operation with a reason that names 1.0", () => {
+diff --git a/packages/shared/src/generative-ui/types.ts b/packages/shared/src/generative-ui/types.ts
+index e2086940b8..1ba5b3b4d6 100644
+--- a/packages/shared/src/generative-ui/types.ts
++++ b/packages/shared/src/generative-ui/types.ts
+@@ -83,7 +83,7 @@ export type A2UIFunctionCall = {
+ 
+ export type A2UIOperation =
+   | {
+-      version: typeof A2UI_VERSION;
++      version: typeof A2UI_VERSION | "v1.0";
+       createSurface: {
+         surfaceId: string;
+         /** Left out by the model. The run's catalog id is filled in. */
+@@ -97,11 +97,11 @@ export type A2UIOperation =
+       };
+     }
+   | {
+-      version: typeof A2UI_VERSION;
++      version: typeof A2UI_VERSION | "v1.0";
+       updateComponents: { surfaceId: string; components: A2UIComponentNode[] };
+     }
+   | {
+-      version: typeof A2UI_VERSION;
++      version: typeof A2UI_VERSION | "v1.0";
+       /**
+        * Sets `value` at `path`. A `null` value deletes the key at `path`.
+        * With no `path`, or `"/"`, it sets the whole data model.
+@@ -109,11 +109,11 @@ export type A2UIOperation =
+       updateDataModel: { surfaceId: string; path?: string; value: unknown };
+     }
+   | {
+-      version: typeof A2UI_VERSION;
++      version: typeof A2UI_VERSION | "v1.0";
+       deleteSurface: { surfaceId: string };
+     }
+   | {
+-      version: typeof A2UI_VERSION;
++      version: typeof A2UI_VERSION | "v1.0";
+       /** Runs an app function in the browser, with no user interaction. */
+       callRendererFunction: {
+         functionCallId: string;
+diff --git a/packages/shared/src/generative-ui/validate-operation.ts b/packages/shared/src/generative-ui/validate-operation.ts
+index 58d3167203..091f40cde4 100644
+--- a/packages/shared/src/generative-ui/validate-operation.ts
++++ b/packages/shared/src/generative-ui/validate-operation.ts
+@@ -171,7 +171,9 @@ export function validateOperation(
+   options: ValidateOperationOptions,
+ ) {
+   if (!isRecord(op)) return fail("operation must be a JSON object");
+-  if (op.version !== A2UI_VERSION) return fail(versionProblem(op.version));
++  // Older Express SDKs emit the pre-release spelling; canonical output stays 1.0.
++  if (op.version !== A2UI_VERSION && op.version !== "v1.0")
++    return fail(versionProblem(op.version));
+   const kind = getOperationKind(op);
+   if (!kind) {
+     return fail(

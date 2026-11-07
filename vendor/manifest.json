@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "copilotkitSource": "https://github.com/CopilotKit/CopilotKit",
+  "copilotkitRevision": "114d64c00c762ca72992884273f83ddc009684e1",
+  "demoSourceRevision": "f68192bd0b07589b0286f1157a3c4003f58004fd",
+  "sourceArchive": {
+    "filename": "package-source.tar.gz",
+    "sha256": "e48f3f02f634d7dff314225d17525c1038380419d45e612eb0b9e5fa3f527746"
+  },
+  "localChanges": "See vendor/README.md and the bundled package-source archive.",
+  "artifacts": [
+    {
+      "name": "@copilotkit/learning",
+      "version": "1.85.0-gemma-demo.0",
+      "filename": "copilotkit-learning-1.85.0-gemma-demo.0.tgz",
+      "sha256": "e06e6a67f78c1c2398c260bbc7dd62fdac43d152557df8700956dae6329a2753"
+    },
+    {
+      "name": "@copilotkit/shared",
+      "version": "1.85.0-gemma-demo.0",
+      "filename": "copilotkit-shared-1.85.0-gemma-demo.0.tgz",
+      "sha256": "90a3a9416171634e9ed23a1ea356fe5df45941eaf760f1a84af18f956be1c6a2"
+    },
+    {
+      "name": "@copilotkit/web-components",
+      "version": "1.85.0-gemma-demo.0",
+      "filename": "copilotkit-web-components-1.85.0-gemma-demo.0.tgz",
+      "sha256": "8a7619fd4de6d1f4bdfaa48c6aa9213c7260400b518ed201ece10b311ce5f42c"
+    },
+    {
+      "name": "@copilotkit/core",
+      "version": "1.85.0-gemma-demo.0",
+      "filename": "copilotkit-core-1.85.0-gemma-demo.0.tgz",
+      "sha256": "1fe3be7a6ba38f08bb547f73741b100e91a4c64e534a03731f3138119f9a2939"
+    },
+    {
+      "name": "@copilotkit/mcp-apps-renderer",
+      "version": "1.85.0-gemma-demo.0",
+      "filename": "copilotkit-mcp-apps-renderer-1.85.0-gemma-demo.0.tgz",
+      "sha256": "f70c8acf9aa1bb1ebed8c35d1af60af37644df792773e0f338ca22fa5909c8d4"
+    },
+    {
+      "name": "@copilotkit/web-inspector",
+      "version": "1.85.0-gemma-demo.0",
+      "filename": "copilotkit-web-inspector-1.85.0-gemma-demo.0.tgz",
+      "sha256": "bf472182bd4c73fed3bae4582088738c310d0e466c4fbfbf91092cb434b5b15f"
+    },
+    {
+      "name": "@copilotkit/angular",
+      "version": "0.6.0-gemma-demo.0",
+      "filename": "copilotkit-angular-0.6.0-gemma-demo.0.tgz",
+      "sha256": "5a782296fcc7276ab3f9b9ff9533d96b225e1da72fc5538501510eeaf756c6e5"
+    }
+  ]
+}

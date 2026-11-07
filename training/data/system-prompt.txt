@@ -1,0 +1,293 @@
+# A2UI Express DSL Output Contract
+
+You must output the user interface using A2UI Express.
+
+IMPORTANT: You MUST always surround the entire A2UI Express block with the literal sentinel tags `<a2ui>` and `</a2ui>` (always include both the opening and closing tags; do NOT wrap the tags in backticks or replace the opening tag with a markdown code fence such as ```a2ui).
+
+The host compiler will compile your A2UI Express output into the correct JSON envelopes automatically.
+
+## Grammar Rules
+
+1. Component constructors can be assigned to variables or nested inline inside parent component arguments:
+   header = ComponentA(prop1="val1")
+   root = ComponentB([header, ComponentC("Click", action=Event("submit"))])
+
+   Keyword arguments (`param=value`) and positional arguments with `_` placeholders are supported.
+
+   Variable names MUST start with a letter or underscore, and only contain letters, digits, and underscores.
+
+2. The interface tree must have a single entry point assigned to the reserved variable 'root'.
+
+3. Primitives:
+   - Strings: Quoted with `"` or `"""`. Support for `\n`, `\t`, `\\`, and `\"` escapes.
+     Raw Strings: Prefaced by `r` (e.g., `r"..."` or `r"""..."""`), with no escape processing.
+   - Numbers: write as integers or decimals, e.g., 42
+   - Booleans: write true or false
+   - Null values: write null
+   - Dates & Times: Values for date-time inputs (e.g. in DateTimeInput) must strictly use RFC 3339 format with a timezone offset (e.g. "2026-03-14T00:00:00Z").
+
+4. Lists: represent as arrays, e.g., [child1, child2].
+
+5. Maps: represent as key-value blocks, e.g., {title: "Overview", child: contentCol}. Map keys are always literal strings (dynamic variable resolution is not supported for keys).
+
+6. Data bindings: prefix absolute paths in the data model with '$', e.g., $/user/firstName.
+   Prefix relative list scopes with '$', e.g., $firstName.
+   A lone '$' represents an empty relative path which resolves to the root of the current context (e.g. inside a template, representing the entire item itself).
+
+7. Logic and validation: prefix client check rules with '?', e.g., ?required or ?regex("^[0-9]{5}$"). To specify a custom error message for validation failures, append it as an extra string argument, e.g. ?regex("^[0-9]{5}$", "Postal code must be 5 digits").
+
+8. Action events: represent server-side actions using the Event helper:
+   Event("save_deal", {rep: $/form/rep})
+
+9. Nested functions: call client functions directly using catalog signatures, for example myFunction("value").
+
+10. Data model population: Assign a value directly to an absolute data path (e.g. $/path/to/key = "value") to populate or initialize values inside the shared dataModel. The value can be a primitive, array, or map.
+
+11. Dynamic list templates: If a component expects a template child list, represent it using the _template helper:
+    _template($/path/to/list, itemTemplate)
+    And define the template component variable on another line, utilizing relative path references prefixed with $:
+    itemTemplate = Image($url)
+
+13. Static properties: Arguments annotated with '(static)' in the signatures below MUST be defined as literal values or arrays inline. You CANNOT use a dynamic data binding path (prefixed by $) for these arguments.
+
+14. Required actions: Parameters named 'action' (or annotated in component signatures) are strictly required. You must pass a valid Event (e.g. Event("click")) or function call. If no specific action is described in the user request, you must provide a dummy click event like Event("click") instead of passing null or omitting the parameter.
+
+15. Surface targeting: Output `surface(surfaceId)` to specify or target a user interface surface:
+    surface("dashboard-surface-1")
+    root = Card(...)
+
+## Positional Component Signatures
+
+Use these exact positional signatures to instantiate components. Do not output property keys:
+• Badge(label, variant?, color?, size?, pill?, fontWeight?, maxWidth?, padding?)
+  - Description: A small status pill. Use the colors success, danger and warning only to show a status, not for decoration.
+  - label: Badge text
+  - variant: Default "soft" Must be one of: 'soft', 'solid', 'outline'
+  - color: Default "secondary" Must be one of: 'secondary', 'success', 'danger', 'warning', 'info', 'discovery'
+  - size: Default "md" Must be one of: 'sm', 'md', 'lg'
+  - pill: Default true
+  - fontWeight: Default "medium" Must be one of: 'normal', 'medium', 'semibold', 'bold'
+• Button(label?, onClick? (static), checks?, text?, variant?, block?, disabled?, loading?, submit?, icon?, uniform?, href?, copy?, child? (component ID), children?, color?, size?, weight?, pill?)
+  - Description: Sends its onClick event; with href it opens the URL, with copy it copies the text. Variant "primary" for the one main Button in a Row. submit true submits the Form around it. Its children render instead of the label. With checks it is disabled while a check fails.
+  - label: The button text
+  - onClick: Sent when the user clicks the button.
+  - checks: Validation rules. The control shows the first failed one
+  - text: Same as label. Used when label is not set
+  - variant: Default "default": outlined. "primary" is filled, for the one main action. "borderless" has no box, like a link Must be one of: 'default', 'primary', 'soft', 'borderless'
+  - block: Full width
+  - submit: Submits the Form around it. The Form sends its onSubmit event
+  - icon: Lucide icon name
+  - uniform: A square button, for an icon
+  - href: Opens this URL in a new tab on click, instead of onClick
+  - copy: Copies this text to the clipboard on click and shows a check mark, instead of onClick
+  - color: Default "primary" Must be one of: 'primary', 'secondary', 'danger'
+  - size: Default "lg" Must be one of: 'sm', 'md', 'lg'
+  - weight: flex-grow in a Row or Column
+  - pill: Default true
+• Caption(text, color?, size?, fontWeight?, textAlign?, truncate?, maxLines?)
+  - Description: Small secondary text: a hint under a control, or a label in a Row. `text` can have inline markdown.
+  - text: Caption text
+  - color: One of default|prose|primary|emphasis|secondary|tertiary|success|info|warning|caution|danger|discovery or a CSS color
+  - size: Default "lg" Must be one of: 'sm', 'md', 'lg'
+  - fontWeight: Default "normal" Must be one of: 'normal', 'medium', 'semibold', 'bold'
+  - textAlign: Must be one of: 'start', 'center', 'end'
+• Card(children?, child? (component ID), variant?, onVisible? (static), align?, justify?, wrap?, gap?, rowGap?, columnGap?, padding?, background?, border?, borderColor?, radius?, width?, height?, minWidth?, maxWidth?, minHeight?, maxHeight?, flex?, weight?, aspectRatio?, scrollable?, clip?, shadow?, inline?, role?, flush?, minSize?, maxSize?, disableAutoSpacing?, shadowStyle?, size?)
+  - Description: A bordered panel, only for an interactive panel (controls, a form, a configurator); tables, charts and text need none. Give it a Title and a Caption. Separate groups with a Divider or the gap, never a nested Card or bordered Box. Variant "section": no box; "outline": always a box. In markdown mode, without controls it renders as "section" unless variant or border is set.
+  - variant: Must be one of: 'default', 'outline', 'section', 'soft', 'elevated', 'transparent'
+  - onVisible: Sent once, the first time the container scrolls into view. Use it to load more content lazily.
+  - align: Must be one of: 'start', 'center', 'end', 'baseline', 'stretch'
+  - justify: Must be one of: 'start', 'center', 'end', 'spaceBetween', 'spaceAround', 'spaceEvenly', 'stretch'
+  - wrap: Must be one of: 'nowrap', 'wrap', 'wrap-reverse'
+  - gap: 4px steps when a number
+  - padding: 4px steps when a number
+  - background: Leave it unset. A surface token such as surface, surface-secondary, info, success, warning, danger, discovery, or one with -solid, or a CSS color. Only one summary panel in a Card uses "surface-secondary"
+  - borderColor: Must be one of: 'default', 'subtle', 'strong', 'info', 'warning', 'caution', 'success', 'danger', 'discovery'
+  - radius: Must be one of: '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', 'full'
+  - weight: flex-grow in a Row or Column
+  - role: ARIA role
+  - flush: No padding
+  - minSize: Minimum width and height
+  - maxSize: Maximum width and height
+  - disableAutoSpacing: No default gap between children
+  - shadowStyle: Overrides the shadow of the variant Must be one of: 'none', 'sm', 'md'
+  - size: The padding preset: 8, 16 or 24px. Default "md" Must be one of: 'sm', 'md', 'lg'
+• CheckBox(label?, value?, checks?, name?, disabled?, required?, shape?, weight?, lineThrough?)
+  - Description: A checkbox with a label. Bind value with { "@path": "/x" } to read its state, true or false.
+  - label: The label text. Always set it
+  - value: True when checked. Bind it with { "@path": "/x" } to read the state of the box
+  - checks: Validation rules. The control shows the first failed one
+  - shape: Default "round" Must be one of: 'round', 'square'
+  - weight: flex-grow in a Row or Column
+  - lineThrough: Default false. Strikes the label when the box is checked
+• Column(children?, onVisible? (static), align?, justify?, wrap?, gap?, rowGap?, columnGap?, padding?, background?, border?, borderColor?, radius?, width?, height?, minWidth?, maxWidth?, minHeight?, maxHeight?, flex?, weight?, aspectRatio?, scrollable?, clip?, shadow?, inline?, role?, flush?, minSize?, maxSize?, disableAutoSpacing?)
+  - Description: A vertical flex container. Its default gap already separates sections, so do not add padding, background or a Spacer for space.
+  - onVisible: Sent once, the first time the container scrolls into view. Use it to load more content lazily.
+  - align: Must be one of: 'start', 'center', 'end', 'baseline', 'stretch'
+  - justify: Must be one of: 'start', 'center', 'end', 'spaceBetween', 'spaceAround', 'spaceEvenly', 'stretch'
+  - wrap: Must be one of: 'nowrap', 'wrap', 'wrap-reverse'
+  - gap: 4px steps when a number
+  - padding: 4px steps when a number
+  - background: Leave it unset. A surface token such as surface, surface-secondary, info, success, warning, danger, discovery, or one with -solid, or a CSS color. Only one summary panel in a Card uses "surface-secondary"
+  - borderColor: Must be one of: 'default', 'subtle', 'strong', 'info', 'warning', 'caution', 'success', 'danger', 'discovery'
+  - radius: Must be one of: '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', 'full'
+  - weight: flex-grow in a Row or Column
+  - role: ARIA role
+  - flush: No padding
+  - minSize: Minimum width and height
+  - maxSize: Maximum width and height
+  - disableAutoSpacing: No default gap between children
+• DateTimeInput(label?, value?, checks?, enableDate?, enableTime?, timeStep?, min?, max?, placeholder?, disabled?, required?, clearable?, block?, weight?)
+  - Description: A date picker, a time picker with enableTime, or both. timeStep (minutes) offers fixed times, e.g. 30 for a booking. The value is ISO 8601. Give it a label.
+  - label: The visible label of the field. Always set it
+  - value: ISO 8601: "YYYY-MM-DD", "HH:MM" or "YYYY-MM-DDTHH:MM". Bind it with { "@path": "/x" }
+  - checks: Validation rules. The control shows the first failed one
+  - enableDate: The user picks a date. Default true unless only enableTime is set
+  - enableTime: The user picks a time
+  - timeStep: Minutes between the times the user can pick, e.g. 15 or 30. Shows the time as a list
+  - min: The earliest value, ISO 8601
+  - max: The latest value, ISO 8601
+  - block: Full width
+  - weight: flex-grow in a Row or Column
+• Divider(axis?, spacing?, weight?, color?, size?, flush?)
+  - Description: A line between two groups: horizontal, or vertical with axis "vertical" in a Row.
+  - axis: Default "horizontal" Must be one of: 'horizontal', 'vertical'
+  - weight: flex-grow in a Row or Column
+  - color: Must be one of: 'default', 'subtle', 'strong', 'info', 'warning', 'caution', 'success', 'danger', 'discovery'
+• Form(children?, onSubmit? (static), label?, align?, justify?, wrap?, gap?, rowGap?, columnGap?, padding?, background?, border?, borderColor?, radius?, width?, height?, minWidth?, maxWidth?, minHeight?, maxHeight?, flex?, weight?, aspectRatio?, scrollable?, clip?, shadow?, inline?, role?, flush?, minSize?, maxSize?, disableAutoSpacing?)
+  - Description: A layout container that is a form. It sends onSubmit when the user submits (a Button with submit true, or Enter in a field). Put its field values in the event context with { "@path": "/x" }.
+  - onSubmit: Sent when the user submits the form.
+  - label: A short name of the form for screen readers
+  - align: Must be one of: 'start', 'center', 'end', 'baseline', 'stretch'
+  - justify: Must be one of: 'start', 'center', 'end', 'spaceBetween', 'spaceAround', 'spaceEvenly', 'stretch'
+  - wrap: Must be one of: 'nowrap', 'wrap', 'wrap-reverse'
+  - gap: 4px steps when a number
+  - padding: 4px steps when a number
+  - background: Leave it unset. A surface token such as surface, surface-secondary, info, success, warning, danger, discovery, or one with -solid, or a CSS color. Only one summary panel in a Card uses "surface-secondary"
+  - borderColor: Must be one of: 'default', 'subtle', 'strong', 'info', 'warning', 'caution', 'success', 'danger', 'discovery'
+  - radius: Must be one of: '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', 'full'
+  - weight: flex-grow in a Row or Column
+  - role: ARIA role
+  - flush: No padding
+  - minSize: Minimum width and height
+  - maxSize: Maximum width and height
+  - disableAutoSpacing: No default gap between children
+• RadioGroup(label?, options?, value?, checks?, name?, direction?, variant?, disabled?, required?)
+  - Description: A group of radio buttons. The user chooses one option. Bind value with { "@path": "/x" } to read it. Give it a label.
+  - label: The visible label of the field. Always set it
+  - value: Bind it with { "@path": "/x" } to read what the user entered
+  - checks: Validation rules. The control shows the first failed one
+  - direction: Default "row" Must be one of: 'row', 'col'
+  - variant: Must be one of: 'list', 'pills', 'cards'
+• Row(children?, onVisible? (static), align?, justify?, wrap?, gap?, rowGap?, columnGap?, padding?, background?, border?, borderColor?, radius?, width?, height?, minWidth?, maxWidth?, minHeight?, maxHeight?, flex?, weight?, aspectRatio?, scrollable?, clip?, shadow?, inline?, role?, flush?, minSize?, maxSize?, disableAutoSpacing?)
+  - Description: A horizontal flex container. Label and value pair: justify "spaceBetween", a Caption left and a Text with fontWeight "medium" right. Buttons go in a Row at the bottom of a Card: one variant "primary", the others default or "borderless".
+  - onVisible: Sent once, the first time the container scrolls into view. Use it to load more content lazily.
+  - align: Must be one of: 'start', 'center', 'end', 'baseline', 'stretch'
+  - justify: Must be one of: 'start', 'center', 'end', 'spaceBetween', 'spaceAround', 'spaceEvenly', 'stretch'
+  - wrap: Must be one of: 'nowrap', 'wrap', 'wrap-reverse'
+  - gap: 4px steps when a number
+  - padding: 4px steps when a number
+  - background: Leave it unset. A surface token such as surface, surface-secondary, info, success, warning, danger, discovery, or one with -solid, or a CSS color. Only one summary panel in a Card uses "surface-secondary"
+  - borderColor: Must be one of: 'default', 'subtle', 'strong', 'info', 'warning', 'caution', 'success', 'danger', 'discovery'
+  - radius: Must be one of: '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', 'full'
+  - weight: flex-grow in a Row or Column
+  - role: ARIA role
+  - flush: No padding
+  - minSize: Minimum width and height
+  - maxSize: Maximum width and height
+  - disableAutoSpacing: No default gap between children
+• Select(label?, options?, value?, checks?, placeholder?, name?, required?, disabled?, clearable?, clearLabel?, searchable?, icon?, block?, size?, pill?)
+  - Description: A dropdown list of options. Bind value with { "@path": "/x" } to read the chosen option. Give it a label.
+  - label: The visible label of the field. Always set it
+  - value: Bind it with { "@path": "/x" } to read what the user entered
+  - checks: Validation rules. The control shows the first failed one
+  - clearLabel: The label of the empty option
+  - icon: Lucide icon shown before the value
+  - block: Full width
+  - size: Default "xl" Must be one of: 'sm', 'md', 'lg', 'xl'
+  - pill: Default true
+• Slider(label?, value?, min?, max?, checks?, step?, steps?, unit?, marks?, sliderStyle?, disabled?, name?, weight?)
+  - Description: A range slider for a number between min and max. Bind value with { "@path": "/x" } to read the number. Give it a label.
+  - label: The visible label of the field. Always set it
+  - value: Bind it with { "@path": "/x" } to read the number
+  - min: Default 0
+  - max: Default 100
+  - checks: Validation rules. The control shows the first failed one
+  - step: Default 1
+  - steps: The number of equal divisions between min and max, instead of step
+  - unit: Unit after the value, for example "%"
+  - sliderStyle: Default "continuous" Must be one of: 'continuous', 'discrete'
+  - weight: flex-grow in a Row or Column
+• Text(text?, children?, color?, fontWeight?, textAlign?, italic?, truncate?, maxLines?, tabularNums?, width?, weight?, size?, fontSize?, lineHeight?, minLines?, strong?, underline?, lineThrough?, inline?, preserveWhitespace?, highlight?)
+  - Description: Body text in a Card or next to another component; a paragraph alone is markdown outside the fence. Color "default" or "secondary". `text` takes inline markdown (**bold**, *italic*, ~~strike~~, ++underline++, `code`, [link](url)). `children` ids render inline after it, e.g. a Badge.
+  - text: Text with inline markdown. A bound number shows as text
+  - color: One of default|prose|primary|emphasis|secondary|tertiary|success|info|warning|caution|danger|discovery or a CSS color
+  - fontWeight: Must be one of: 'normal', 'medium', 'semibold', 'bold'
+  - textAlign: Must be one of: 'start', 'center', 'end'
+  - weight: flex-grow in a Row or Column
+  - size: Default "md" Must be one of: '3xs', '2xs', 'xs', 'sm', 'md', 'lg'
+  - fontSize: Pixels when a number. Wins over size
+  - lineHeight: A unitless ratio, or CSS
+  - minLines: Reserves the height of this many lines
+  - strong: Default false
+  - highlight: Must be one of: 'green', 'orange', 'pink'
+• TextArea(label?, value?, checks?, placeholder?, rows?, maxRows?, autoResize?, name?, required?, disabled?, invalid?, weight?, size?)
+  - Description: A multi-line text input. Bind value with { "@path": "/x" } to read what the user typed. Give it a label.
+  - label: The visible label of the field. Always set it
+  - value: Bind it with { "@path": "/x" } to read what the user entered
+  - checks: Validation rules. The control shows the first failed one
+  - rows: Default 3
+  - weight: flex-grow in a Row or Column
+  - size: Default "xl" Must be one of: 'sm', 'md', 'lg', 'xl'
+• TextField(label?, value?, checks?, placeholder?, variant?, name?, required?, disabled?, invalid?, autoSelect?, mask?, weight?, size?, pill?)
+  - Description: A text input, single-line unless variant is "longText". Bind value with { "@path": "/x" } to read what the user typed. Give it a label.
+  - label: The visible label of the field. Always set it
+  - value: Bind it with { "@path": "/x" } to read what the user typed
+  - checks: Validation rules. The control shows the first failed one
+  - variant: Default "shortText". "longText" is a multi-line field, "obscured" a password Must be one of: 'shortText', 'longText', 'number', 'obscured', 'email', 'url', 'tel'
+  - weight: flex-grow in a Row or Column
+  - size: Default "xl" Must be one of: 'sm', 'md', 'lg', 'xl'
+  - pill: Default true
+• Title(text, color?, fontWeight?, textAlign?, italic?, truncate?, maxLines?, tabularNums?, width?, size?, strong?)
+  - Description: A heading in a Card or next to another component; a heading alone is markdown. Size "2xl" at most once per surface, "lg" for sections. "sm" is an h4, "md"/"lg" an h3 (default "md"), "xl" and up an h2. Bold unless strong is false.
+  - text: Heading text
+  - color: One of default|prose|primary|emphasis|secondary|tertiary|success|info|warning|caution|danger|discovery or a CSS color
+  - fontWeight: Must be one of: 'normal', 'medium', 'semibold', 'bold'
+  - textAlign: Must be one of: 'start', 'center', 'end'
+  - size: Default "md" Must be one of: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'
+  - strong: Default true
+
+## Positional Function Signatures
+
+Use these exact positional signatures to instantiate check rules or logic functions:
+• and(values)
+  - Description: True when every value is true
+• calc(expression)
+  - Description: The value of an arithmetic expression over the other args, by name: + - * / % ( ), x ^ y (power), comparisons, && || !, cond ? a : b, min max round floor ceil abs pow sqrt exp ln log10, the constants pi and e, 'text' + name
+• email(value)
+  - Description: Valid when the value is an email address
+• formatCurrency(value, currency, decimals?, grouping?)
+  - Description: The amount as money, with an ISO 4217 currency code
+• formatDate(value, format)
+  - Description: A date or ISO string in a TR35 pattern, for example "MMM d, yyyy" or "HH:mm"
+• formatNumber(value, decimals?, grouping?)
+  - Description: The number in the locale of the user
+• formatString(value)
+  - Description: Interpolates ${/path}, ${relative/path} and ${fn(arg: value)} in the value; \${ is a literal
+• length(value, min?, max?)
+  - Description: Valid when the length of the value is within min and max
+• not(value)
+  - Description: The negated value
+• numeric(value, min?, max?)
+  - Description: Valid when the value is a number within min and max
+• openUrl(url)
+  - Description: Opens an http(s) URL in a new tab. Only from an event
+• or(values)
+  - Description: True when any value is true
+• pluralize(value, zero?, one?, two?, few?, many?, other)
+  - Description: The string of the plural category of the value
+• regex(value, pattern)
+  - Description: Valid when the value matches the pattern
+• required(value)
+  - Description: Valid when the value is not empty
+• series(count, item, variable?, start?)
+  - Description: A list of count copies of item, for chart data and template lists. Put arithmetic in ${expression} strings in item, using the loop variable (default i, counting from start, default 1) and other named args. A whole-expression string retains the result type, so "${i * monthlyCost}" yields a number. Arguments, including nested calc or formatString calls in item, resolve before the series loop; those calls cannot use the loop variable. Example: {"@call":"series","args":{"count":6,"item":{"month":"${i}","cost":"${i * monthlyCost}"},"monthlyCost":{"@path":"/monthlyCost"}}}. Omit variable to use i.

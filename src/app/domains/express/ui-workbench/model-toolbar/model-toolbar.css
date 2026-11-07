@@ -1,0 +1,76 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+}
+* {
+  box-sizing: border-box;
+}
+.model-picker {
+  display: flex;
+  align-items: center;
+}
+.model-picker select {
+  font: inherit;
+  font-size: 12px;
+  color: #31435c;
+  background: #fff;
+  border: 1px solid #d7dfeb;
+  border-radius: 7px;
+  padding: 0 10px;
+  height: 35px;
+  min-width: 224px;
+}
+select:focus-visible {
+  outline: 3px solid #81ace8;
+  outline-offset: 2px;
+}
+.local-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #557262;
+  font-size: 10px;
+  white-space: nowrap;
+  margin-right: 5px;
+}
+.local-badge span {
+  color: #5b9975;
+  font-size: 8px;
+}
+
+@media (max-width: 1150px) {
+  .local-badge {
+    display: none;
+  }
+}
+@media (max-width: 850px) {
+  :host {
+    flex: 1;
+    gap: 6px;
+  }
+  .model-picker select {
+    min-width: 200px;
+  }
+}
+@media (max-width: 520px) {
+  :host {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .model-picker {
+    flex: 1;
+    min-width: 0;
+  }
+  .model-picker select {
+    width: 100%;
+    min-width: 0;
+    font-size: 10px;
+  }
+  :host > .btn {
+    padding-inline: 8px;
+    font-size: 10px;
+  }
+}

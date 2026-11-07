@@ -1,0 +1,122 @@
+<app-page-header>
+  <app-model-toolbar
+    [options]="modelOptions"
+    [mode]="store.mode()"
+    [busy]="store.busy()"
+    [stoppable]="store.running() || store.debug().modelStarting"
+    [resetting]="store.resetting()"
+    [canEnable]="store.canEnable()"
+    [enableLabel]="store.enableLabel()"
+    [describedBy]="store.downloadNotice() ? noticeId : null"
+    (modeChange)="store.selectModel($event)"
+    (stop)="store.stop()"
+    (reset)="store.reset()"
+    (enable)="store.enable()"
+  />
+</app-page-header>
+
+<app-model-status
+  [availability]="store.debug().availability"
+  [label]="store.statusLabel()"
+  [device]="store.debug().model?.device"
+  [progress]="store.debug().downloadProgress"
+  [chromeSelected]="store.mode() === 'chrome'"
+  [notice]="store.downloadNotice()"
+  [detailsUrl]="store.modelDetailsUrl()"
+/>
+
+<main [attr.data-expanded-panel]="expandedPanel()">
+  <section class="conversation panel" aria-label="CopilotKit conversation">
+    <div class="panel-heading">
+      <span><i>01</i> Conversation</span>
+      <div class="panel-actions">
+        <small>{{ backendLabel() }}</small>
+        <button
+          appPanelToggle
+          label="conversation"
+          [expanded]="expandedPanel() === 'conversation'"
+          (click)="togglePanel('conversation', $event.currentTarget)"
+        ></button>
+      </div>
+    </div>
+    <div class="examples" aria-label="Example prompts">
+      @for (example of examples; track example.caseId) {
+      <button
+        type="button"
+        class="btn"
+        [disabled]="store.busy() || !store.enabled()"
+        [title]="example.description"
+        (click)="store.runExample(example.request)"
+      >
+        {{ example.label }} <span aria-hidden="true">↗</span>
+      </button>
+      }
+    </div>
+    <copilot-chat class="chat" [agentId]="agentId" />
+  </section>
+
+  <section class="workbench">
+    <div class="workspace">
+      <section class="source panel" aria-label="Express source panel">
+        <div class="panel-heading">
+          <span><i>02</i> Express source</span>
+          <button
+            appPanelToggle
+            label="Express source"
+            [expanded]="expandedPanel() === 'source'"
+            (click)="togglePanel('source', $event.currentTarget)"
+          ></button>
+        </div>
+        <app-code-view [source]="store.debug().dsl" />
+        <div class="editor-footer">
+          <span>{{ store.debug().dsl.length }} characters</span>
+          <a
+            href="https://a2ui.org/specification/proposals/express/a2ui_express/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Syntax reference ↗</a
+          >
+          <span>A2UI v1.0 · streamed</span>
+        </div>
+      </section>
+
+      <section class="preview panel" aria-label="Native preview">
+        <div class="panel-heading">
+          <span><i>03</i> Native preview</span>
+          <button
+            appPanelToggle
+            label="native preview"
+            [expanded]="expandedPanel() === 'preview'"
+            (click)="togglePanel('preview', $event.currentTarget)"
+          ></button>
+        </div>
+        <div class="preview-canvas">
+          <copilot-generative-ui-surface
+            [id]="previewTarget"
+            description="The live preview next to the Express editor. Render every interface here."
+            [components]="components"
+            [autoScroll]="false"
+            [partialPreview]="true"
+          >
+            <div class="empty-preview">
+              <div class="braces">&#123; &#125;</div>
+              <h3>Your interface appears here</h3>
+              <p>Enable the model and try a prompt.</p>
+            </div>
+          </copilot-generative-ui-surface>
+        </div>
+      </section>
+    </div>
+
+    <app-debug-panel
+      class="debug panel"
+      [debug]="store.debug()"
+      [formData]="store.formData()"
+      [expanded]="expandedPanel() === 'debug'"
+      [(tab)]="debugTab"
+      [(collapsed)]="debugCollapsed"
+      (expandToggle)="togglePanel('debug', $event)"
+      (restore)="restorePanels()"
+    />
+  </section>
+</main>

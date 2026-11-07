@@ -1,0 +1,14 @@
+diff --git a/package.json b/package.json
+index 348eb1e022b611b6b4169e5a3f3e275432923129..390c3db1d99dd39f77dfe088590d9bb224375281 100644
+--- a/package.json
++++ b/package.json
+@@ -34,5 +34,9 @@
+   "dependencies": {
+     "@a2ui/web_core": "^0.15.0",
+     "antlr4ng": "3.0.16"
++  },
++  "browser": {
++    "fs": false,
++    "path": false
+   }
+ }

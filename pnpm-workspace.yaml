@@ -1,0 +1,24 @@
+# The vendored CopilotKit and A2UI packages depend on each other's local
+# snapshot versions, which are not on the registry: resolve them to the
+# tarballs in vendor/ everywhere in the dependency graph.
+overrides:
+  "@copilotkit/angular": "file:vendor/copilotkit-angular-0.6.0-gemma-demo.0.tgz"
+  "@copilotkit/core": "file:vendor/copilotkit-core-1.85.0-gemma-demo.0.tgz"
+  "@copilotkit/learning": "file:vendor/copilotkit-learning-1.85.0-gemma-demo.0.tgz"
+  "@copilotkit/mcp-apps-renderer": "file:vendor/copilotkit-mcp-apps-renderer-1.85.0-gemma-demo.0.tgz"
+  "@copilotkit/shared": "file:vendor/copilotkit-shared-1.85.0-gemma-demo.0.tgz"
+  "@copilotkit/web-components": "file:vendor/copilotkit-web-components-1.85.0-gemma-demo.0.tgz"
+  "@copilotkit/web-inspector": "file:vendor/copilotkit-web-inspector-1.85.0-gemma-demo.0.tgz"
+
+# Only esbuild, Angular's bundler, needs its install script. The others ship
+# prebuilt binaries, or are Node-only (onnxruntime-node) and unused here.
+allowBuilds:
+  esbuild: true
+  "@parcel/watcher": false
+  lmdb: false
+  msgpackr-extract: false
+  onnxruntime-node: false
+  protobufjs: false
+
+patchedDependencies:
+  "@a2ui/agent@0.1.0": patches/@a2ui__agent@0.1.0.patch

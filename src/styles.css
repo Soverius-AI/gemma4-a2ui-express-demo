@@ -1,0 +1,70 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+app-root {
+  display: block;
+}
+
+/* Workbench buttons. A class, not an element selector, so CopilotKit's chat
+   keeps its own button styles. */
+.btn {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+  border: 1px solid #d7dfeb;
+  border-radius: 7px;
+  background: #fff;
+  color: #344862;
+  padding: 0 12px;
+  height: 35px;
+  white-space: nowrap;
+}
+.btn:hover:not(:disabled) {
+  background: #edf3fc;
+  border-color: #adc3e3;
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.btn:focus-visible {
+  outline: 3px solid #81ace8;
+  outline-offset: 2px;
+}
+.btn-primary {
+  color: #fff;
+  background: #3468b0;
+  border-color: #3468b0;
+}
+.btn-primary:hover:not(:disabled) {
+  background: #285796;
+}
+.btn-stop {
+  color: #a2373b;
+  border-color: #e8c5c7;
+}
+/* The small panel controls: expand, restore, show and hide. */
+.btn-quiet {
+  height: 25px;
+  padding: 0 7px;
+  font-size: 10px;
+  border-color: transparent;
+  background: #f5f7fb;
+  color: #61758e;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}

@@ -1,0 +1,10 @@
+dist/
+.angular/
+node_modules/
+coverage/
+vendor/
+notices/
+public/
+training/data/
+model-tools/.venv/
+pnpm-lock.yaml
